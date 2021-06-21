@@ -1,0 +1,34 @@
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: westend
+  name: relaychain-ing
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/group.name: wstgroup
+    #alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=60
+    alb.ingress.kubernetes.io/auth-session-timeout: '86400'
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-port: '80'
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /alice
+            backend:
+              serviceName: relaychain-alice-svc
+              servicePort: 9944
+          - path: /bob
+            backend:
+              serviceName: relaychain-bob-svc
+              servicePort: 9944
+          - path: /charlie
+            backend:
+              serviceName: relaychain-charlie-svc
+              servicePort: 9944     

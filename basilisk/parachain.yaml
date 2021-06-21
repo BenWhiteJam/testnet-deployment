@@ -1,0 +1,132 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: westend
+  name: relaychain-alice-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: relaychain-alice
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: relaychain-alice
+    spec:
+      containers:
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:latest
+        imagePullPolicy: Always
+        name: relaychain-alice
+        command: ["/polkadot/polkadot"]
+        args: ["--chain", "/polkadot/westend-raw.json", "--base-path", "/polkadot", "--alice", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001"]
+        ports:
+        - containerPort: 9944
+        - containerPort: 30333
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: westend
+  name: relaychain-bob-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: relaychain-bob
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: relaychain-bob
+    spec:
+      containers:
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:latest
+        imagePullPolicy: Always
+        name: relaychain-bob
+        command: ["/polkadot/polkadot"]
+        args: ["--chain", "/polkadot/westend-raw.json", "--base-path", "/polkadot", "--bob"]
+        ports:
+        - containerPort: 9944
+        - containerPort: 30333
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: westend
+  name: relaychain-charlie-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: relaychain-charlie
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: relaychain-charlie
+    spec:
+      containers:
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:latest
+        imagePullPolicy: Always
+        name: relaychain-charlie
+        command: ["/polkadot/polkadot"]
+        args: ["--chain", "/polkadot/westend-raw.json", "--base-path", "/polkadot", "--charlie"]
+        ports:
+        - containerPort: 9944
+        - containerPort: 30333
+---        
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: westend
+  name: coll-01-svc
+spec:
+  ports:
+    - port: 9944
+      name: websocket
+      targetPort: 9944
+      protocol: TCP
+    - port: 30333
+      name: custom-port
+      targetPort: 30333
+      protocol: TCP
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: coll-01-deployment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: westend
+  name: coll-02-svc
+spec:
+  ports:
+    - port: 9944
+      name: websocket
+      targetPort: 9944
+      protocol: TCP
+    - port: 30333
+      name: custom-port
+      targetPort: 30333
+      protocol: TCP  
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: coll-02-deployment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: westend
+  name: coll-03-svc
+spec:
+  ports:
+    - port: 9944
+      name: websocket
+      targetPort: 9944
+      protocol: TCP
+    - port: 30333
+      name: custom-port
+      targetPort: 30333
+      protocol: TCP  
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: coll-03-deployment
+
