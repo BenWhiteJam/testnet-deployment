@@ -49,7 +49,7 @@ spec:
         imagePullPolicy: Always
         name: relaychain-bob
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/polkadot/westend-raw.json", "--base-path", "/polkadot", "--bob"]
+        args: ["--chain", "/polkadot/westend-raw.json", "--base-path", "/polkadot", "--bob", "--unsafe-ws-external","--rpc-cors", "all" , "--prometheus-external"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
@@ -105,14 +105,18 @@ metadata:
   name: relaychain-bob-svc
 spec:
   ports:
-    - port: 9944
+    - port: 80
       name: websocket
       targetPort: 9944
       protocol: TCP
     - port: 30333
       name: custom-port
       targetPort: 30333
-      protocol: TCP  
+      protocol: TCP
+    - port: 9615
+      name: prom-port
+      targetPort: 9615
+      protocol: TCP   
   type: NodePort
   selector:
     app.kubernetes.io/name: relaychain-bob
