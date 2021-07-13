@@ -1,0 +1,98 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hydra-ui-test
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: hydra-ui-test
+  name: relaychain-alice-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: relaychain-alice
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: relaychain-alice
+    spec:
+      containers:
+      - image: parity/polkadot:v0.9.7
+        imagePullPolicy: Always
+        name: relaychain-alice
+        command: ["polkadot"]
+        args: ["--chain", "rococo-local", "--bootnodes", "/dns/relaychain-alice-svc.hydra-ui-test.svc.cluster.local/tcp/30444/p2p/12D3KooWQrsgoZoB3FKLbauHYmNM7JWrUhS71pvbkaE5s34VPJAo", "--base-path", "/polkadot", "--alice", "--unsafe-ws-external","--rpc-cors", "all" , "--prometheus-external"]
+        ports:
+        - containerPort: 9944
+        - containerPort: 30333
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: hydra-ui-test
+  name: relaychain-bob-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: relaychain-bob
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: relaychain-bob
+    spec:
+      containers:
+      - image: parity/polkadot:v0.9.7
+        imagePullPolicy: Always
+        name: relaychain-bob
+        command: ["polkadot"]
+        args: ["--chain", "rococo-local", "--bootnodes", "/dns/relaychain-bob-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQrsgoZoB3FKLbauHYmNM7JWrUhS71pvbkaE5s34VPJAo", "--base-path", "/polkadot", "--bob", "--unsafe-ws-external","--rpc-cors", "all" , "--prometheus-external"]
+        ports:
+        - containerPort: 9944
+        - containerPort: 30333
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: hydra-ui-test
+  name: relaychain-alice-svc
+spec:
+  ports:
+    - port: 9944
+      name: websocket
+      targetPort: 9944
+      protocol: TCP
+    - port: 30333
+      name: custom-port
+      targetPort: 30333
+      protocol: TCP
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: relaychain-alice
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: hydra-ui-test
+  name: relaychain-bob-svc
+spec:
+  ports:
+    - port: 80
+      name: websocket
+      targetPort: 9944
+      protocol: TCP
+    - port: 30333
+      name: custom-port
+      targetPort: 30333
+      protocol: TCP
+    - port: 9615
+      name: prom-port
+      targetPort: 9615
+      protocol: TCP   
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: relaychain-bob
+---
