@@ -7,7 +7,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/group.name: wstgroup4
+    alb.ingress.kubernetes.io/group.name: wsttestnetrelay
     alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=4000
     alb.ingress.kubernetes.io/auth-session-timeout: '86400'
     alb.ingress.kubernetes.io/target-type: ip
@@ -15,7 +15,7 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-path: /
     alb.ingress.kubernetes.io/healthcheck-port: '80'
     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=600
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:601305236792:certificate/db6f50f2-7d60-4ac7-9e65-b0e395e4ad0c
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:601305236792:certificate/ded774f5-d9b2-40bb-8789-39c7216f7f8b
   labels:
     app: relaychain-testnet-ui
 spec:
@@ -25,5 +25,5 @@ spec:
         paths:
           - path: /ws/
             backend:
-              serviceName: relaychain-bob-svc
+              serviceName: relaychain-alice-svc
               servicePort: 80

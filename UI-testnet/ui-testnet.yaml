@@ -23,11 +23,18 @@ spec:
       - image: parity/polkadot:v0.9.7
         imagePullPolicy: Always
         name: relaychain-alice
+        volumeMounts:
+          - mountPath: /tmp
+            name: persistent-storage
         command: ["polkadot"]
-        args: ["--chain", "rococo-local", "--bootnodes", "/dns/relaychain-alice-svc.hydra-ui-test.svc.cluster.local/tcp/30444/p2p/12D3KooWQrsgoZoB3FKLbauHYmNM7JWrUhS71pvbkaE5s34VPJAo", "--base-path", "/polkadot", "--alice", "--unsafe-ws-external","--rpc-cors", "all" , "--prometheus-external"]
+        args: ["--chain", "/tmp/rococo-local-raw.json", "--bootnodes", "/dns/relaychain-alice-svc.hydra-ui-test.svc.cluster.local/tcp/30444/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001" ,"--base-path", "/polkadot", "--alice", "--unsafe-ws-external","--rpc-cors", "all" , "--prometheus-external"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
+      volumes:
+        - name: persistent-storage
+          persistentVolumeClaim:
+            claimName: efs-pv
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -48,11 +55,18 @@ spec:
       - image: parity/polkadot:v0.9.7
         imagePullPolicy: Always
         name: relaychain-bob
+        volumeMounts:
+          - mountPath: /tmp
+            name: persistent-storage
         command: ["polkadot"]
-        args: ["--chain", "rococo-local", "--bootnodes", "/dns/relaychain-bob-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQrsgoZoB3FKLbauHYmNM7JWrUhS71pvbkaE5s34VPJAo", "--base-path", "/polkadot", "--bob", "--unsafe-ws-external","--rpc-cors", "all" , "--prometheus-external"]
+        args: ["--chain", "/tmp/rococo-local-raw.json", "--bootnodes", "/dns/relaychain-alice-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--base-path", "/polkadot", "--bob", "--unsafe-ws-external","--rpc-cors", "all" , "--prometheus-external"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
+      volumes:
+        - name: persistent-storage
+          persistentVolumeClaim:
+            claimName: efs-pv  
 ---
 apiVersion: v1
 kind: Service
@@ -61,7 +75,7 @@ metadata:
   name: relaychain-alice-svc
 spec:
   ports:
-    - port: 9944
+    - port: 80
       name: websocket
       targetPort: 9944
       protocol: TCP
@@ -91,7 +105,7 @@ spec:
     - port: 9615
       name: prom-port
       targetPort: 9615
-      protocol: TCP   
+      protocol: TCP
   type: NodePort
   selector:
     app.kubernetes.io/name: relaychain-bob

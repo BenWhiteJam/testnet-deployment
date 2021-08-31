@@ -1,0 +1,231 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: hydra-ui-test
+  name: parachain-coll-01-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: parachain-coll-01
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: parachain-coll-01
+    spec:
+      containers:
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/parachain-test:basilisk_4.0.0-6c25c50_runtime_16.0.0
+        imagePullPolicy: Always
+        name: parachain-coll-01
+        command: ["/basilisk/basilisk"]
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2000", "--collator", "--base-path", "/basilisk/", "--node-key", "cdb68598a1b0078bd66c22452a9782cc9de42a0ae0f0401fa1257fc9311bcea9", "--", "--chain", "/tmp/westend-live.json", "--base-path", "/basilisk/", "--execution=wasm"]
+        ports:
+        - containerPort: 9944
+        - containerPort: 9933
+        - containerPort: 30333
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: hydra-ui-test
+  name: parachain-coll-02-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: parachain-coll-02
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: parachain-coll-02
+    spec:
+      containers:
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/parachain-test:basilisk_4.0.0-6c25c50_runtime_16.0.0
+        imagePullPolicy: Always
+        name: parachain-coll-02
+        command: ["/basilisk/basilisk"]
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2000", "--collator", "--base-path", "/basilisk/", "--node-key", "398e2a5bb0cf07003040b689cfc5b304dfe17ebf44b24ca8a8eb530b31209d69", "--", "--chain", "/tmp/westend-live.json", "--base-path", "/basilisk/", "--execution=wasm"]
+        ports:
+        - containerPort: 9944
+        - containerPort: 9933
+        - containerPort: 30333
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: hydra-ui-test
+  name: parachain-coll-03-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: parachain-coll-03
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: parachain-coll-03
+    spec:
+      containers:
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/parachain-test:basilisk_4.0.0-6c25c50_runtime_16.0.0
+        imagePullPolicy: Always
+        name: parachain-coll-03
+        command: ["/basilisk/basilisk"]
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2000", "--collator", "--base-path", "/basilisk/", "--node-key", "c1fd5edac8303a77c2d350896a7ba0e9e7abb694e9f272eb090592b5e8446904", "--", "--chain", "/tmp/westend-live.json", "--base-path", "/basilisk/", "--execution=wasm"]
+        ports:
+        - containerPort: 9944
+        - containerPort: 9933
+        - containerPort: 30333
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: hydra-ui-test
+  name: parachain-coll-04-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: parachain-coll-04
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: parachain-coll-04
+    spec:
+      containers:
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/parachain-test:basilisk_4.0.0-6c25c50_runtime_16.0.0
+        imagePullPolicy: Always
+        name: parachain-coll-04
+        command: ["/basilisk/basilisk"]
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2000", "--collator", "--base-path", "/basilisk/", "--node-key", "c1fd5edac8303a77c2d350896a7ba0e9e7abb694e9f272eb090592b5e8446904", "--", "--chain", "/tmp/westend-live.json", "--base-path", "/basilisk/", "--execution=wasm"]
+        ports:
+        - containerPort: 9944
+        - containerPort: 9933
+        - containerPort: 30333
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: hydra-ui-test
+  name: public-rpc-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: public-rpc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: public-rpc
+    spec:
+      containers:
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/parachain-test:basilisk_4.0.0-6c25c50_runtime_16.0.0
+        imagePullPolicy: Always
+        name: public-rpc
+        command: ["/basilisk/basilisk"]
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2000", "--base-path", "/basilisk/", "--", "--chain", "/basilisk/westend-raw.json", "--base-path", "/basilisk/", "--execution=wasm", "--unsafe-ws-external"]
+        ports:
+        - containerPort: 9944
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: hydra-ui-test
+  name: coll-01-svc
+spec:
+  ports:
+    - port: 9944
+      name: websocket
+      targetPort: 9944
+      protocol: TCP
+    - port: 30333
+      name: custom-port
+      targetPort: 30333
+      protocol: TCP
+    - port: 9933
+      name: rpc-port
+      targetPort: 9933  
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: parachain-coll-01
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: hydra-ui-test
+  name: coll-02-svc
+spec:
+  ports:
+    - port: 9944
+      name: websocket
+      targetPort: 9944
+      protocol: TCP
+    - port: 30333
+      name: custom-port
+      targetPort: 30333
+      protocol: TCP
+    - port: 9933
+      name: rpc-port
+      targetPort: 9933
+      protocol: TCP   
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: parachain-coll-02
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: hydra-ui-test
+  name: coll-03-svc
+spec:
+  ports:
+    - port: 9944
+      name: websocket
+      targetPort: 9944
+      protocol: TCP
+    - port: 30333
+      name: custom-port
+      targetPort: 30333
+      protocol: TCP  
+    - port: 9933
+      name: rpc-port
+      targetPort: 9933
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: parachain-coll-03
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: hydra-ui-test
+  name: coll-04-svc
+spec:
+  ports:
+    - port: 9944
+      name: websocket
+      targetPort: 9944
+      protocol: TCP
+    - port: 30333
+      name: custom-port
+      targetPort: 30333
+      protocol: TCP  
+    - port: 9933
+      name: rpc-port
+      targetPort: 9933
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: parachain-coll-04
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: hydra-ui-test
+  name: public-rpc-svc
+spec:
+  ports:
+    - port: 80
+      name: websocket
+      targetPort: 9944
+      protocol: TCP
+  type: NodePort    
+  selector:
+    app.kubernetes.io/name: public-rpc
