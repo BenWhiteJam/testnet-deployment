@@ -2,7 +2,12 @@
   "name": "Westend Hydradx Testnet",
   "id": "westend_hydradx_testnet",
   "chainType": "Live",
-  "bootNodes": [],
+  "bootNodes": [
+    "/dns/validator01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp",
+    "/dns/validator02-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWHdiAxVd8uMQR1hGWXccidmfCwLqcMpGwR6QcTP6QRMuD",
+    "/dns/validator03-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSCufgHzV4fCwRijfH2k3abrpAJxTKxEvN1FDuRXA2U9x",
+    "/dns/validator04-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSsChzF81YDUKpe9Uk5AHV5oqAaXAcWNSPYgoLauUk4st"
+  ],
   "telemetryEndpoints": [
     [
       "/dns/telemetry.hydradx.io/tcp/443/x-parity-wss/%2Fsubmit%2F",

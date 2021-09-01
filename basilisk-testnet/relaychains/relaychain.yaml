@@ -27,7 +27,7 @@ spec:
           - mountPath: /tmp
             name: persistent-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-live.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--bootnodes", "/dns/validator01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--keystore-path", "/tmp/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/tmp/westend-live.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "/tmp/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
@@ -59,7 +59,7 @@ spec:
           - mountPath: /tmp
             name: persistent-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-live.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000002", "--bootnodes", "/dns/validator01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--keystore-path", "/tmp/keystore-v2", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/tmp/westend-live.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000002", "--keystore-path", "/tmp/keystore-v2", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
@@ -91,7 +91,7 @@ spec:
           - mountPath: /tmp
             name: persistent-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-live.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000003", "--bootnodes", "/dns/validator01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--keystore-path", "/tmp/keystore-v3", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/tmp/westend-live.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000003", "--keystore-path", "/tmp/keystore-v3", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
@@ -123,7 +123,7 @@ spec:
           - mountPath: /tmp
             name: persistent-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-live.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000004", "--bootnodes", "/dns/validator01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--keystore-path", "/tmp/keystore-v4", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/tmp/westend-live.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000004", "--keystore-path", "/tmp/keystore-v4", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
