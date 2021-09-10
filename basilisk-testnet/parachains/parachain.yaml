@@ -15,6 +15,13 @@ spec:
     spec:
       containers:
       - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/parachain-test:4.0.0-f4e23da
+        resources:
+          limits:
+            memory: "5000Mi"
+            cpu: "3000m"
+          requests:
+            memory: "4000Mi"
+            cpu: "3000m"
         imagePullPolicy: Always
         name: parachain-coll-01
         volumeMounts:
@@ -48,6 +55,13 @@ spec:
     spec:
       containers:
       - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/parachain-test:4.0.0-f4e23da
+        resources:
+          limits:
+            memory: "5000Mi"
+            cpu: "3000m"
+          requests:
+            memory: "4000Mi"
+            cpu: "3000m"
         imagePullPolicy: Always
         name: parachain-coll-02
         volumeMounts:
@@ -81,6 +95,13 @@ spec:
     spec:
       containers:
       - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/parachain-test:4.0.0-f4e23da
+        resources:
+          limits:
+            memory: "5000Mi"
+            cpu: "3000m"
+          requests:
+            memory: "4000Mi"
+            cpu: "3000m"
         imagePullPolicy: Always
         name: parachain-coll-03
         volumeMounts:
@@ -114,6 +135,13 @@ spec:
     spec:
       containers:
       - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/parachain-test:4.0.0-f4e23da
+        resources:
+          limits:
+            memory: "5000Mi"
+            cpu: "3000m"
+          requests:
+            memory: "4000Mi"
+            cpu: "3000m"
         imagePullPolicy: Always
         name: public-rpc
         volumeMounts:

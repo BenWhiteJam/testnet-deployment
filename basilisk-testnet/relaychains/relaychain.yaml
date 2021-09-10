@@ -20,7 +20,17 @@ spec:
         app.kubernetes.io/name: relaychain-validator01
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-5af7db189
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-8e643e660
+        env:
+        - name: TMPDIR
+          value: /polkadot
+        resources:
+          limits:
+            memory: "5000Mi"
+            cpu: "3000m"
+          requests:
+            memory: "4000Mi"
+            cpu: "3000m"
         imagePullPolicy: Always
         name: relaychain-validator01
         volumeMounts:
@@ -52,7 +62,17 @@ spec:
         app.kubernetes.io/name: relaychain-validator02
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-5af7db189
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-8e643e660
+        env:
+        - name: TMPDIR
+          value: /polkadot
+        resources:
+          limits:
+            memory: "5000Mi"
+            cpu: "3000m"
+          requests:
+            memory: "4000Mi"
+            cpu: "3000m"
         imagePullPolicy: Always
         name: relaychain-validator02
         volumeMounts:
@@ -84,7 +104,17 @@ spec:
         app.kubernetes.io/name: relaychain-validator03
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-5af7db189
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-8e643e660
+        env:
+        - name: TMPDIR
+          value: /polkadot
+        resources:
+          limits:
+            memory: "5000Mi"
+            cpu: "3000m"
+          requests:
+            memory: "4000Mi"
+            cpu: "3000m"
         imagePullPolicy: Always
         name: relaychain-validator03
         volumeMounts:
@@ -116,7 +146,17 @@ spec:
         app.kubernetes.io/name: relaychain-validator04
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-5af7db189
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-8e643e660
+        env:
+        - name: TMPDIR
+          value: /polkadot
+        resources:
+          limits:
+            memory: "5000Mi"
+            cpu: "3000m"
+          requests:
+            memory: "4000Mi"
+            cpu: "3000m"
         imagePullPolicy: Always
         name: relaychain-validator04
         volumeMounts:
