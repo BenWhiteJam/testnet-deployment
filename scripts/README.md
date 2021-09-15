@@ -12,7 +12,7 @@ This script parse provided k8s yaml file(with `deployment`) for docker image, pa
 * run script `cd para-register && npm i && node index.js ./parachain.yaml`
 
 #### Parachain docker image
-Binary have to be set as `entrypoint` in docker emage. Example:
+Binary have to be set as `entrypoint` in docker image. Example:
 ```
 FROM ubuntu:20.04
 
