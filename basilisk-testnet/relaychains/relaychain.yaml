@@ -20,7 +20,7 @@ spec:
         app.kubernetes.io/name: relaychain-validator01
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-8e643e660
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-7a9f62477
         env:
         - name: TMPDIR
           value: /polkadot
@@ -37,7 +37,7 @@ spec:
           - mountPath: /tmp
             name: persistent-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-live.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "/tmp/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "/tmp/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
@@ -62,7 +62,7 @@ spec:
         app.kubernetes.io/name: relaychain-validator02
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-8e643e660
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-7a9f62477
         env:
         - name: TMPDIR
           value: /polkadot
@@ -79,7 +79,7 @@ spec:
           - mountPath: /tmp
             name: persistent-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-live.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000002", "--keystore-path", "/tmp/keystore-v2", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000002", "--keystore-path", "/tmp/keystore-v2", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
@@ -104,7 +104,7 @@ spec:
         app.kubernetes.io/name: relaychain-validator03
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-8e643e660
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-7a9f62477
         env:
         - name: TMPDIR
           value: /polkadot
@@ -121,7 +121,7 @@ spec:
           - mountPath: /tmp
             name: persistent-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-live.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000003", "--keystore-path", "/tmp/keystore-v3", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000003", "--keystore-path", "/tmp/keystore-v3", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
@@ -146,7 +146,7 @@ spec:
         app.kubernetes.io/name: relaychain-validator04
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-8e643e660
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-7a9f62477
         env:
         - name: TMPDIR
           value: /polkadot
@@ -163,7 +163,7 @@ spec:
           - mountPath: /tmp
             name: persistent-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-live.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000004", "--keystore-path", "/tmp/keystore-v4", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000004", "--keystore-path", "/tmp/keystore-v4", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
