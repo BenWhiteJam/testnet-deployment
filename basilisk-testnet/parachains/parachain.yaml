@@ -28,7 +28,7 @@ spec:
           - mountPath: /tmp
             name: persistent-storage
         command: ["/basilisk/basilisk"]
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "200", "--collator", "--base-path", "/basilisk/", "--node-key", "0000000000000000000000000000000000000000000000000000000000000005", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSuTq6MG9gPt7qZqLFKkYrfxMewTZhj9nmRHJkPwzWDG2", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=wasm", "--bootnodes", "/dns/validator01-svc.westend.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp"]
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "200", "--collator", "--base-path", "/basilisk/", "--node-key", "0000000000000000000000000000000000000000000000000000000000000005", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSuTq6MG9gPt7qZqLFKkYrfxMewTZhj9nmRHJkPwzWDG2", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=wasm", "--bootnodes", "/dns/validator01-svc.westend.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--log", "debug"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
@@ -68,7 +68,7 @@ spec:
           - mountPath: /tmp
             name: persistent-storage
         command: ["/basilisk/basilisk"]
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "200", "--collator", "--base-path", "/basilisk/", "--node-key", "0000000000000000000000000000000000000000000000000000000000000006", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSuTq6MG9gPt7qZqLFKkYrfxMewTZhj9nmRHJkPwzWDG2", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=wasm", "--bootnodes", "/dns/validator01-svc.westend.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp"]
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "200", "--collator", "--base-path", "/basilisk/", "--node-key", "0000000000000000000000000000000000000000000000000000000000000006", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSuTq6MG9gPt7qZqLFKkYrfxMewTZhj9nmRHJkPwzWDG2", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=wasm", "--bootnodes", "/dns/validator01-svc.westend.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--log", "debug"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
@@ -108,7 +108,7 @@ spec:
           - mountPath: /tmp
             name: persistent-storage
         command: ["/basilisk/basilisk"]
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "200", "--collator", "--base-path", "/basilisk/", "--node-key", "0000000000000000000000000000000000000000000000000000000000000007", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSuTq6MG9gPt7qZqLFKkYrfxMewTZhj9nmRHJkPwzWDG2", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=wasm", "--bootnodes", "/dns/validator01-svc.westend.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp"]
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "200", "--collator", "--base-path", "/basilisk/", "--node-key", "0000000000000000000000000000000000000000000000000000000000000007", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSuTq6MG9gPt7qZqLFKkYrfxMewTZhj9nmRHJkPwzWDG2", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=wasm", "--bootnodes", "/dns/validator01-svc.westend.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--log", "debug"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
@@ -148,7 +148,7 @@ spec:
           - mountPath: /tmp
             name: persistent-storage
         command: ["/basilisk/basilisk"]
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "200", "--base-path", "/basilisk/", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSuTq6MG9gPt7qZqLFKkYrfxMewTZhj9nmRHJkPwzWDG2", "--", "--chain", "/tmp/westend-raw.json", "--bootnodes", "/dns/validator01-svc.westend.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--base-path", "/basilisk/", "--execution=wasm", "--unsafe-ws-external", ]
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "200", "--base-path", "/basilisk/", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSuTq6MG9gPt7qZqLFKkYrfxMewTZhj9nmRHJkPwzWDG2", "--", "--chain", "/tmp/westend-raw.json", "--bootnodes", "/dns/validator01-svc.westend.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--base-path", "/basilisk/", "--execution=wasm", "--unsafe-ws-external"]
         ports:
         - containerPort: 9944
       volumes:

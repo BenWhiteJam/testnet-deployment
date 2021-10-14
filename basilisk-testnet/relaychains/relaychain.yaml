@@ -23,7 +23,7 @@ spec:
       - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-7a9f62477
         env:
         - name: TMPDIR
-          value: /polkadot
+          value: /mnt/polkadot1
         resources:
           limits:
             memory: "5000Mi"
@@ -36,15 +36,20 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
+          - mountPath: /mnt/polkadot1
+            name: node1-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "/tmp/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot1", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "/tmp/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--log", "debug"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
         - name: persistent-storage
           persistentVolumeClaim:
-            claimName: efs-pv  
+            claimName: efs-pv
+        - name: node1-storage
+          persistentVolumeClaim:
+            claimName: efs-node1-storage    
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -65,7 +70,7 @@ spec:
       - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-7a9f62477
         env:
         - name: TMPDIR
-          value: /polkadot
+          value: /mnt/polkadot2
         resources:
           limits:
             memory: "5000Mi"
@@ -78,15 +83,20 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
+          - mountPath: /mnt/polkadot2
+            name: node2-storage  
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000002", "--keystore-path", "/tmp/keystore-v2", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot2", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000002", "--keystore-path", "/tmp/keystore-v2", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--log", "debug"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
         - name: persistent-storage
           persistentVolumeClaim:
-            claimName: efs-pv  
+            claimName: efs-pv
+        - name: node2-storage
+          persistentVolumeClaim:
+            claimName: efs-node2-storage
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -107,7 +117,7 @@ spec:
       - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-7a9f62477
         env:
         - name: TMPDIR
-          value: /polkadot
+          value: /mnt/polkadot3
         resources:
           limits:
             memory: "5000Mi"
@@ -120,15 +130,20 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
+          - mountPath: /mnt/polkadot3
+            name: node3-storage  
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000003", "--keystore-path", "/tmp/keystore-v3", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot3", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000003", "--keystore-path", "/tmp/keystore-v3", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--log", "debug"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
         - name: persistent-storage
           persistentVolumeClaim:
-            claimName: efs-pv  
+            claimName: efs-pv
+        - name: node3-storage
+          persistentVolumeClaim:
+            claimName: efs-node3-storage      
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -149,7 +164,7 @@ spec:
       - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.9-1-7a9f62477
         env:
         - name: TMPDIR
-          value: /polkadot
+          value: /mnt/polkadot4
         resources:
           limits:
             memory: "5000Mi"
@@ -162,15 +177,20 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
+          - mountPath: /mnt/polkadot4
+            name: node4-storage  
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/polkadot", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000004", "--keystore-path", "/tmp/keystore-v4", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot4", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000004", "--keystore-path", "/tmp/keystore-v4", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--log", "debug"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
         - name: persistent-storage
           persistentVolumeClaim:
-            claimName: efs-pv  
+            claimName: efs-pv
+        - name: node4-storage
+          persistentVolumeClaim:
+            claimName: efs-node4-storage   
 ---
 apiVersion: v1
 kind: Service

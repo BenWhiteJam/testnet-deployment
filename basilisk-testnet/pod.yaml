@@ -9,7 +9,12 @@ spec:
     volumeMounts:
     - name: persistent-storage
       mountPath: /tmp
+    - name: node3-storage
+      mountPath: /mnt/polkadot3
   volumes:
   - name: persistent-storage
     persistentVolumeClaim:
       claimName: efs-pv
+  - name: node3-storage
+    persistentVolumeClaim:
+      claimName: efs-node3-storage
