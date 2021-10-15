@@ -39,7 +39,7 @@ spec:
           - mountPath: /mnt/polkadot1
             name: node1-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot1", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "/tmp/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--log", "debug"]
+        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot1", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "/tmp/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
         ports:
         - containerPort: 9944
         - containerPort: 30333

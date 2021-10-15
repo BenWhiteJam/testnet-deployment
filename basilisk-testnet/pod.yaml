@@ -7,14 +7,14 @@ spec:
   - name: redis
     image: redis
     volumeMounts:
-    - name: persistent-storage
-      mountPath: /tmp
     - name: node3-storage
       mountPath: /mnt/polkadot3
+    - name: node4-storage
+      mountPath: /mnt/polkadot4 
   volumes:
-  - name: persistent-storage
-    persistentVolumeClaim:
-      claimName: efs-pv
   - name: node3-storage
     persistentVolumeClaim:
       claimName: efs-node3-storage
+  - name: node4-storage
+    persistentVolumeClaim:
+      claimName: efs-node4-storage    
