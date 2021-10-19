@@ -3,11 +3,11 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   namespace: hydra-ui-test
-  name: parachain-testnet-ingress
+  name: relaychain-testnet-ingress
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/group.name: paractestnet
+    alb.ingress.kubernetes.io/group.name: relaytestnet
     alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=4000
     alb.ingress.kubernetes.io/auth-session-timeout: '86400'
     alb.ingress.kubernetes.io/target-type: ip
@@ -15,15 +15,15 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-path: /
     alb.ingress.kubernetes.io/healthcheck-port: '80'
     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=600
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:601305236792:certificate/e8c76b77-0fff-450b-8782-d45700c1d9ee
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:601305236792:certificate/d29abda7-8b10-4310-ae46-083d1476227e
   labels:
-    app: public-rpc-expose
+    app: relaychain-testnet-app
 spec:
   rules:
-    - host: parachain-testnet.hydration.cloud
+    - host: relaychain-testnet.hydration.cloud
       http:
         paths:
           - path: /ws/
             backend:
-              serviceName: public-rpc-svc
+              serviceName: validator02-svc
               servicePort: 80
