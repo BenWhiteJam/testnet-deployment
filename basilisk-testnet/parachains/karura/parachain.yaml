@@ -2,19 +2,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: hydra-ui-test
-  name: parachain-coll-01-deployment
+  name: karura-parachain-coll-01-deployment
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: parachain-coll-01
+      app.kubernetes.io/name: karura-parachain-coll-01
   replicas: 1
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: parachain-coll-01
+        app.kubernetes.io/name: karura-parachain-coll-01
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/parachain-test:4.0.0-f4e23da
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/karura-test:1.6.0-1c177692
         resources:
           limits:
             memory: "5000Mi"
@@ -23,12 +23,11 @@ spec:
             memory: "4000Mi"
             cpu: "3000m"
         imagePullPolicy: Always
-        name: parachain-coll-01
+        name: karura-parachain-coll-01
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
-        command: ["/basilisk/basilisk"]
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "200", "--collator", "--base-path", "/basilisk/", "--node-key", "0000000000000000000000000000000000000000000000000000000000000005", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSuTq6MG9gPt7qZqLFKkYrfxMewTZhj9nmRHJkPwzWDG2", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=wasm", "--bootnodes", "/dns/validator01-svc.westend.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--log", "debug"]
+        args: ["--chain", "/tmp/karura-raw.json", "--parachain-id", "2000", "--collator", "--base-path", "/karura/", "--node-key", "000000000000000000000000000000000000000000000000000000000000000c", "--keystore-path", "/tmp/karura/keystore-c1", "--bootnodes", "/dns/karura-coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWB48q6TvbNtRPA5JfaaTuxjvMV2kwooYyz7frVUJ6yHTK", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/karura/", "--execution=Native"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
@@ -42,19 +41,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: hydra-ui-test
-  name: parachain-coll-02-deployment
+  name: karura-parachain-coll-02-deployment
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: parachain-coll-02
+      app.kubernetes.io/name: karura-parachain-coll-02
   replicas: 1
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: parachain-coll-02
+        app.kubernetes.io/name: karura-parachain-coll-02
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/parachain-test:4.0.0-f4e23da
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/karura-test:1.6.0-1c177692
         resources:
           limits:
             memory: "5000Mi"
@@ -63,12 +62,11 @@ spec:
             memory: "4000Mi"
             cpu: "3000m"
         imagePullPolicy: Always
-        name: parachain-coll-02
+        name: karura-parachain-coll-02
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
-        command: ["/basilisk/basilisk"]
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "200", "--collator", "--base-path", "/basilisk/", "--node-key", "0000000000000000000000000000000000000000000000000000000000000006", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSuTq6MG9gPt7qZqLFKkYrfxMewTZhj9nmRHJkPwzWDG2", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=wasm", "--bootnodes", "/dns/validator01-svc.westend.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--log", "debug"]
+        args: ["--chain", "/tmp/karura-raw.json", "--parachain-id", "2000", "--collator", "--base-path", "/karura/", "--node-key", "000000000000000000000000000000000000000000000000000000000000000d", "--keystore-path", "/tmp/karura/keystore-c2", "--bootnodes", "/dns/karura-coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWB48q6TvbNtRPA5JfaaTuxjvMV2kwooYyz7frVUJ6yHTK", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/karura/", "--execution=Native"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
@@ -82,19 +80,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: hydra-ui-test
-  name: parachain-coll-03-deployment
+  name: karura-parachain-coll-03-deployment
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: parachain-coll-03
+      app.kubernetes.io/name: karura-parachain-coll-03
   replicas: 1
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: parachain-coll-03
+        app.kubernetes.io/name: karura-parachain-coll-03
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/parachain-test:4.0.0-f4e23da
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/karura-test:1.6.0-1c177692
         resources:
           limits:
             memory: "5000Mi"
@@ -103,12 +101,11 @@ spec:
             memory: "4000Mi"
             cpu: "3000m"
         imagePullPolicy: Always
-        name: parachain-coll-03
+        name: karura-parachain-coll-03
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
-        command: ["/basilisk/basilisk"]
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "200", "--collator", "--base-path", "/basilisk/", "--node-key", "0000000000000000000000000000000000000000000000000000000000000007", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSuTq6MG9gPt7qZqLFKkYrfxMewTZhj9nmRHJkPwzWDG2", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=wasm", "--bootnodes", "/dns/validator01-svc.westend.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--log", "debug"]
+        args: ["--chain", "/tmp/karura-raw.json", "--parachain-id", "2000", "--collator", "--base-path", "/karura/", "--node-key", "000000000000000000000000000000000000000000000000000000000000000e", "--keystore-path", "/tmp/karura/keystore-c3", "--bootnodes", "/dns/karura-coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWB48q6TvbNtRPA5JfaaTuxjvMV2kwooYyz7frVUJ6yHTK", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/karura/", "--execution=Native"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
@@ -122,19 +119,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: hydra-ui-test
-  name: public-rpc-deployment
+  name: karura-public-rpc-deployment
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: public-rpc
+      app.kubernetes.io/name: karura-public-rpc
   replicas: 1
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: public-rpc
+        app.kubernetes.io/name: karura-public-rpc
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/parachain-test:4.0.0-f4e23da
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/karura-test:1.6.0-1c177692
         resources:
           limits:
             memory: "5000Mi"
@@ -147,8 +144,7 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
-        command: ["/basilisk/basilisk"]
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "200", "--base-path", "/basilisk/", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWSuTq6MG9gPt7qZqLFKkYrfxMewTZhj9nmRHJkPwzWDG2", "--execution=wasm", "--ws-external", "--unsafe-ws-external", "--rpc-methods", "Unsafe", "--rpc-cors", "all", "--", "--chain", "/tmp/westend-raw.json", "--bootnodes", "/dns/validator01-svc.westend.svc.cluster.local/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp", "--base-path", "/basilisk/"]
+        args: ["--chain", "/tmp/karura-raw.json", "--parachain-id", "2000", "--base-path", "/karura/", "--bootnodes", "/dns/karura-coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWB48q6TvbNtRPA5JfaaTuxjvMV2kwooYyz7frVUJ6yHTK", "--ws-external", "--unsafe-ws-external", "--rpc-methods", "Unsafe", "--rpc-cors", "all", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/karura/"]
         ports:
         - containerPort: 9944
       volumes:
@@ -160,7 +156,7 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: hydra-ui-test
-  name: coll-01-svc
+  name: karura-coll-01-svc
 spec:
   ports:
     - port: 9944
@@ -176,13 +172,13 @@ spec:
       targetPort: 9933  
   type: NodePort
   selector:
-    app.kubernetes.io/name: parachain-coll-01
+    app.kubernetes.io/name: karura-parachain-coll-01
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: hydra-ui-test
-  name: coll-02-svc
+  name: karura-coll-02-svc
 spec:
   ports:
     - port: 9944
@@ -199,13 +195,13 @@ spec:
       protocol: TCP   
   type: NodePort
   selector:
-    app.kubernetes.io/name: parachain-coll-02
+    app.kubernetes.io/name: karura-parachain-coll-02
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: hydra-ui-test
-  name: coll-03-svc
+  name: karura-coll-03-svc
 spec:
   ports:
     - port: 9944
@@ -221,13 +217,13 @@ spec:
       targetPort: 9933
   type: NodePort
   selector:
-    app.kubernetes.io/name: parachain-coll-03
+    app.kubernetes.io/name: karura-parachain-coll-03
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: hydra-ui-test
-  name: public-rpc-svc
+  name: karura-public-rpc-svc
 spec:
   ports:
     - port: 80
@@ -236,4 +232,4 @@ spec:
       protocol: TCP
   type: NodePort    
   selector:
-    app.kubernetes.io/name: public-rpc
+    app.kubernetes.io/name: karura-public-rpc

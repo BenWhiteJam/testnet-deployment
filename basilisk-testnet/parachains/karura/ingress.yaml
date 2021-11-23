@@ -3,11 +3,11 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   namespace: hydra-ui-test
-  name: relaychain-testnet-ingress
+  name: karura-parachain-testnet-ingress
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/group.name: relaytestnet
+    alb.ingress.kubernetes.io/group.name: karuratestnet
     alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=4000
     alb.ingress.kubernetes.io/auth-session-timeout: '86400'
     alb.ingress.kubernetes.io/target-type: ip
@@ -15,15 +15,15 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-path: /
     alb.ingress.kubernetes.io/healthcheck-port: '80'
     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=600
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:601305236792:certificate/d29abda7-8b10-4310-ae46-083d1476227e
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:601305236792:certificate/a033be18-7e93-437a-9050-83d0c757743d
   labels:
-    app: relaychain-testnet-app
+    app: karura-public-rpc-expose
 spec:
   rules:
-    - host: relaychain-testnet.hydration.cloud
+    - host: karura-parachain-testnet.hydration.cloud
       http:
         paths:
           - path: /ws/
             backend:
-              serviceName: public-rpc-deployment-svc
+              serviceName: karura-public-rpc-svc
               servicePort: 80
