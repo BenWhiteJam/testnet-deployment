@@ -50,3 +50,4 @@ jobs:
           kubectl exec cleanup-pod-4 -- bash -c "rm /mnt/polkadot7/chains"
           kubectl exec cleanup-pod-5 -- bash -c "rm /mnt/polkadot8/chains"
           
+          
