@@ -35,11 +35,18 @@ jobs:
         run: aws eks --region eu-west-1 update-kubeconfig --name hydradx-c
       - name: Delete deployments
         run: kubectl delete --all deployments --namespace=hydra-ui-test
-      - name: ls and where am I
-        run: |
-          ls
-          pwd  
-      - name: Cleanup volumes
+      - name: Create cleanup pods
         working-directory: ./public-testnet
         run: kubectl apply $(ls cleanup*.yaml | awk ' { print " -f " $1 } ') -n hydra-ui-test
-
+      - name: Cleanup volumes
+        run: |
+          kubectl exec cleanup-pod-1 -- bash -c "rm /mnt/public-node/chains"
+          kubectl exec cleanup-pod-1 -- bash -c "rm /mnt/polkadot1/chains"
+          kubectl exec cleanup-pod-2 -- bash -c "rm /mnt/polkadot2/chains"
+          kubectl exec cleanup-pod-2 -- bash -c "rm /mnt/polkadot3/chains"
+          kubectl exec cleanup-pod-3 -- bash -c "rm /mnt/polkadot4/chains"
+          kubectl exec cleanup-pod-3 -- bash -c "rm /mnt/polkadot5/chains"
+          kubectl exec cleanup-pod-4 -- bash -c "rm /mnt/polkadot6/chains"
+          kubectl exec cleanup-pod-4 -- bash -c "rm /mnt/polkadot7/chains"
+          kubectl exec cleanup-pod-5 -- bash -c "rm /mnt/polkadot8/chains"
+          

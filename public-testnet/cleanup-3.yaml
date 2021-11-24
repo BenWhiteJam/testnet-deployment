@@ -5,11 +5,8 @@ metadata:
 spec:
   containers:
   - name: cleanup-pod-3
+  command: ["sh", "-c", "tail -f /dev/null"]
     image: redis
-    command: ["/bin/sh", "-c"]
-    args: 
-      - rm -rf /mnt/polkadot4/chains/
-        rm -rf /mnt/polkadot5/chains/
     volumeMounts:
     - name: node4-storage
       mountPath: /mnt/polkadot4
