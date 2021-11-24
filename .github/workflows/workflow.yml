@@ -1,5 +1,8 @@
-name: 
+name: Deploy on Kubernetes Cluster
 on:
+  push:
+    branches:
+      - main
   repository_dispatch:
     types: [run-k8s-deployment]
 jobs:
@@ -29,4 +32,7 @@ jobs:
           sudo apt-get install awscli
           aws configure set aws_access_key_id ${{ env.AWS_ACCESS_KEY_ID }}; aws configure set aws_secret_access_key ${{ env.AWS_SECRET_ACCESS_KEY }}; aws configure set default.region eu-west-1
           aws eks --region eu-west-1 update-kubeconfig --name hydradx-c
-      - name: 
+      - name: Delete deployments
+        run: kubectl delete --all deployments --namespace=hydra-ui-test
+      - name: Cleanup volumes
+        run: kubectl apply $(ls cleanup*.yaml | awk ' { print " -f " $1 } ')  
