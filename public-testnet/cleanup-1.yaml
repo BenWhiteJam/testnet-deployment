@@ -6,6 +6,10 @@ spec:
   containers:
   - name: cleanup-pod-1
     image: redis
+    command: ["/bin/sh", "-c"]
+    args: 
+      - rm -rf /mnt/public-node/chains/
+        rm -rf /mnt/polkadot1/chains/
     volumeMounts:
     - name: efs-public-rpc-storage
       mountPath: /mnt/public-node

@@ -6,6 +6,10 @@ spec:
   containers:
   - name: cleanup-pod-2
     image: redis
+    command: ["/bin/sh", "-c"]
+    args: 
+      - rm -rf /mnt/polkadot2/chains/
+        rm -rf /mnt/polkadot3/chains/
     volumeMounts:
     - name: node2-storage
       mountPath: /mnt/polkadot2
