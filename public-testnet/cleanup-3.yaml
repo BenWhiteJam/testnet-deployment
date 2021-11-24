@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: cleanup-pod-3
-  command: ["sh", "-c", "tail -f /dev/null"]
+    command: ["sh", "-c", "tail -f /dev/null"]
     image: redis
     volumeMounts:
     - name: node4-storage
