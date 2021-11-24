@@ -25,13 +25,13 @@ jobs:
           echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
           sudo apt-get update
           sudo apt-get install -y kubectl
-      - name: Sleep for 60 seconds
-        run: sleep 60
+      - name: Sleep for 10 seconds
+        run: sleep 10
       - name: Configure AWS CLI and K8s
         run: |
           sudo apt-get install awscli
           aws configure set aws_access_key_id ${{ env.AWS_ACCESS_KEY_ID }}; aws configure set aws_secret_access_key ${{ env.AWS_SECRET_ACCESS_KEY }}; aws configure set default.region eu-west-1
-      - name: configure kubernetes cluster
+      - name: Configure K8S Cluster
         run: aws eks --region eu-west-1 update-kubeconfig --name hydradx-c
       - name: Delete deployments
         run: kubectl delete --all deployments --namespace=hydra-ui-test
@@ -40,10 +40,6 @@ jobs:
           ls
           pwd  
       - name: Cleanup volumes
-        run: |
-          kubectl apply -f cleanup-1.yaml
-          kubectl apply -f cleanup-2.yaml
-          kubectl apply -f cleanup-3.yaml
-          kubectl apply -f cleanup-4.yaml
-          kubectl apply -f cleanup-5.yaml
+        working-directory: ./public-testnet
+        run: kubectl apply $(ls cleanup*.yaml | awk ' { print " -f " $1 } ')
 
