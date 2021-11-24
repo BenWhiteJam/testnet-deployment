@@ -39,7 +39,7 @@ jobs:
         working-directory: ./public-testnet
         run: kubectl apply $(ls cleanup*.yaml | awk ' { print " -f " $1 } ') -n hydra-ui-test
       - name: Wait for pods to get running
-        run: sleep 90
+        run: sleep 120
       - name: Cleanup volumes
         run: |
           kubectl config set-context --current --namespace=hydra-ui-test
@@ -52,5 +52,20 @@ jobs:
           kubectl exec cleanup-pod-4 -- bash -c "[ -d /mnt/polkadot6/chains ]; rm -rf /mnt/polkadot6/chains"
           kubectl exec cleanup-pod-4 -- bash -c "[ -d /mnt/polkadot7/chains ]; rm -rf /mnt/polkadot7/chains"
           kubectl exec cleanup-pod-5 -- bash -c "[ -d /mnt/polkadot8/chains ]; rm -rf /mnt/polkadot8/chains"
-          
-          
+      - name: Delete cleanup pods
+        run: kubectl get pods --no-headers=true | awk '/cleanup/{print $1}'| xargs kubectl delete pod
+      - name: Create relaychain manifests
+        working-directory: ./public-testnet/relaychains
+        run: kubectl apply -f relaychain.yaml
+      - name: Wait for relaychain to deploy
+        run: sleep 60
+      - name: Create basilisk parachain manifests
+        working-directory: ./public-testnet/parachains/basilisk
+        run: kubectl apply -f parachain.yaml
+      - name: Wait for basilisk parachain to deploy
+        run: sleep 60
+      - name: Create karura parachain manifests
+        working-directory: ./public-testnet/parachains/karura
+        run: kubectl apply -f parachain.yaml
+      - name: Wait for karura parachain to deploy
+        run: sleep 60  
