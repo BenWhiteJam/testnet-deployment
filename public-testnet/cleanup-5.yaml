@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cleanup-pod-5
+spec:
+  containers:
+  - name: cleanup-pod-5
+    image: redis
+    volumeMounts:
+    - name: node8-storage
+      mountPath: /mnt/polkadot8
+  volumes:
+  - name: node8-storage
+    persistentVolumeClaim:
+      claimName: efs-node8-storage

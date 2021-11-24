@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cleanup-pod-4
+spec:
+  containers:
+  - name: cleanup-pod-4
+    image: redis
+    volumeMounts:
+    - name: node6-storage
+      mountPath: /mnt/polkadot6
+    - name: node7-storage
+      mountPath: /mnt/polkadot7
+  volumes:
+  - name: node6-storage
+    persistentVolumeClaim:
+      claimName: efs-node6-storage
+  - name: node7-storage
+    persistentVolumeClaim:
+      claimName: efs-node7-storage   
