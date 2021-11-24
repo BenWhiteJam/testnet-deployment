@@ -36,5 +36,10 @@ jobs:
       - name: Delete deployments
         run: kubectl delete --all deployments --namespace=hydra-ui-test
       - name: Cleanup volumes
-        run: kubectl apply $(ls cleanup*.yaml | awk ' { print " -f " $1 } ')
+        run: |
+          kubectl apply -f cleanup-1.yaml
+          kubectl apply -f cleanup-2.yaml
+          kubectl apply -f cleanup-3.yaml
+          kubectl apply -f cleanup-4.yaml
+          kubectl apply -f cleanup-5.yaml
 
