@@ -35,6 +35,10 @@ jobs:
         run: aws eks --region eu-west-1 update-kubeconfig --name hydradx-c
       - name: Delete deployments
         run: kubectl delete --all deployments --namespace=hydra-ui-test
+      - name: ls and where am I
+        run: |
+          ls
+          pwd  
       - name: Cleanup volumes
         run: |
           kubectl apply -f cleanup-1.yaml
