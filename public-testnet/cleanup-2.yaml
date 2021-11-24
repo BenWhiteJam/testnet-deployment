@@ -19,6 +19,6 @@ spec:
   - name: node2-storage
     persistentVolumeClaim:
       claimName: efs-node2-storage
-  - name: node1-storage
+  - name: node3-storage
     persistentVolumeClaim:
       claimName: efs-node3-storage   

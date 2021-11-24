@@ -41,5 +41,5 @@ jobs:
           pwd  
       - name: Cleanup volumes
         working-directory: ./public-testnet
-        run: kubectl apply $(ls cleanup*.yaml | awk ' { print " -f " $1 } ')
+        run: kubectl apply $(ls cleanup*.yaml | awk ' { print " -f " $1 } ') -n hydra-ui-test
 
