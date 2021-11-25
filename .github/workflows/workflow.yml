@@ -66,4 +66,19 @@ jobs:
         run: kubectl apply -f parachain.yaml
       - name: Wait for karura parachain to deploy
         run: sleep 60  
-      
+  inform-deployment-success:
+    needs: run-k8s-deployment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-ruby@v1
+      - name: Send Webhook Notification
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          HOOK_OS_NAME: ${{ runner.os }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+        run: |
+          git clone https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
+          bash webhook/send.sh $JOB_STATUS $WEBHOOK_URL
+        shell: bash
