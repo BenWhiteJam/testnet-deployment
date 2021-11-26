@@ -27,7 +27,6 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
-        command: ["/basilisk/basilisk"]
         args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/basilisk/", "--node-key", "0000000000000000000000000000000000000000000000000000000000000009", "--keystore-path", "/tmp/basilisk/keystore-c1", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native"]
         ports:
         - containerPort: 9944
@@ -67,7 +66,6 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
-        command: ["/basilisk/basilisk"]
         args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/basilisk/", "--node-key", "000000000000000000000000000000000000000000000000000000000000000a", "--keystore-path", "/tmp/basilisk/keystore-c2", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native"]
         ports:
         - containerPort: 9944
@@ -107,7 +105,6 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
-        command: ["/basilisk/basilisk"]
         args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/basilisk/", "--node-key", "000000000000000000000000000000000000000000000000000000000000000b", "--keystore-path", "/tmp/basilisk/keystore-c3", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native"]
         ports:
         - containerPort: 9944
@@ -147,7 +144,6 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
-        command: ["/basilisk/basilisk"]
         args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--base-path", "/basilisk/", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--ws-external", "--unsafe-ws-external", "--rpc-methods", "Unsafe", "--rpc-cors", "all", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/"]
         ports:
         - containerPort: 9944
