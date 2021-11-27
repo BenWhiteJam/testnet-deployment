@@ -36,14 +36,15 @@ jobs:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           source: 's3://hydradx-config-bucket/testnet/basilisk-raw.json'
-          dest: './basilisk-raw.json'
+          dest: './public-testnet/basilisk-raw.json'
       - name: Copy configuration file to kubernetes
+        working-directory: ./public-testnet
         run: |
           kubectl apply -f copy-pod.yaml
           sleep 80
           kubectl cp basilisk-raw.json copy-pod:/tmp/
           kubectl delete po copy-pod
-          
+
       - name: Delete deployments
         run: kubectl delete --all deployments --namespace=hydra-ui-test
       - name: Create cleanup pods
