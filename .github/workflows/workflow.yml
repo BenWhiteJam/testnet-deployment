@@ -43,6 +43,7 @@ jobs:
           sleep 80
           kubectl cp basilisk-raw.json copy-pod:/tmp/
           kubectl delete po copy-pod
+          
       - name: Delete deployments
         run: kubectl delete --all deployments --namespace=hydra-ui-test
       - name: Create cleanup pods
