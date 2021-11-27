@@ -30,6 +30,19 @@ jobs:
           aws configure set aws_access_key_id ${{ env.AWS_ACCESS_KEY_ID }}; aws configure set aws_secret_access_key ${{ env.AWS_SECRET_ACCESS_KEY }}; aws configure set default.region eu-west-1
       - name: Configure K8S Cluster
         run: aws eks --region eu-west-1 update-kubeconfig --name hydradx-c
+      - name: Download Basilisk configuration file
+        uses: prewk/s3-cp-action@v2
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          source: 's3://hydradx-config-bucket/testnet/basilisk-raw.json'
+          dest: './basilisk-raw.json'
+      - name: Copy configuration file to kubernetes
+        run: |
+          kubectl apply -f copy-pod.yaml
+          sleep 80
+          kubectl cp basilisk-raw.json copy-pod:/tmp/
+          kubectl delete po copy-pod
       - name: Delete deployments
         run: kubectl delete --all deployments --namespace=hydra-ui-test
       - name: Create cleanup pods
