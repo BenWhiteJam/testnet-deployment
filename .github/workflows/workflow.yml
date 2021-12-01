@@ -41,7 +41,7 @@ jobs:
         working-directory: ./public-testnet
         run: |
           kubectl config set-context --current --namespace=hydra-ui-test
-          kubectl apply -f copy-pod.yaml
+          kubectl apply -f copy-pod.yaml -n hydra-ui-test
           sleep 80
           kubectl cp basilisk-raw.json copy-pod:/tmp/
           kubectl delete po copy-pod
