@@ -35,10 +35,10 @@ spec:
           resources: {}
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: db-claim0
+              name: my-csi-inline-vol
       restartPolicy: Always
       volumes:
-        - name: db-claim0
-          persistentVolumeClaim:
-            claimName: db-claim0
+        - name: my-csi-inline-vol
+          csi:
+            driver: inline.storage.kubernetes.io
 status: {}

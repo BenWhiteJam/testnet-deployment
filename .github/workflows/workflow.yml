@@ -85,6 +85,7 @@ jobs:
       - name: Register Basilisk Parachain
         run: |
           curl -H 'Authorization: ${{ secrets.AUTH_TOKEN }}' https://ci-para-reg.hydration.cloud/register ${{ secrets.AUTH_TOKEN }} &
+
   inform-deployment-success:
     needs: run-k8s-deployment
     runs-on: ubuntu-latest
