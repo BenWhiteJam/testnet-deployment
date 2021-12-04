@@ -73,7 +73,7 @@ spec:
             name: persistent-storage
           - mountPath: /mnt/karura2
             name: karura2-storage  
-        args: ["--chain", "/tmp/karura-raw.json", "--parachain-id", "2000", "--collator", "--base-path", "/mnt/karura2", "--node-key", "000000000000000000000000000000000000000000000000000000000000000d", "--keystore-path", "/tmp/karura/keystore-c2", "--bootnodes", "/dns/karura-coll-02-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWB48q6TvbNtRPA5JfaaTuxjvMV2kwooYyz7frVUJ6yHTK", "--public-addr", "/dns/karura-coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/karura/", "--execution=Native"]
+        args: ["--chain", "/tmp/karura-raw.json", "--parachain-id", "2000", "--collator", "--base-path", "/mnt/karura2", "--node-key", "000000000000000000000000000000000000000000000000000000000000000d", "--keystore-path", "/tmp/karura/keystore-c2", "--bootnodes", "/dns/karura-coll-02-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWB48q6TvbNtRPA5JfaaTuxjvMV2kwooYyz7frVUJ6yHTK", "--public-addr", "/dns/karura-coll-02-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/karura/", "--execution=Native"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
@@ -117,7 +117,7 @@ spec:
             name: persistent-storage
           - mountPath: /mnt/karura3
             name: karura3-storage  
-        args: ["--chain", "/tmp/karura-raw.json", "--parachain-id", "2000", "--collator", "--base-path", "/karura/", "--node-key", "000000000000000000000000000000000000000000000000000000000000000e", "--keystore-path", "/tmp/karura/keystore-c3", "--bootnodes", "/dns/karura-coll-03-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWB48q6TvbNtRPA5JfaaTuxjvMV2kwooYyz7frVUJ6yHTK", "--public-addr", "/dns/karura-coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/karura/", "--execution=Native"]
+        args: ["--chain", "/tmp/karura-raw.json", "--parachain-id", "2000", "--collator", "--base-path", "/karura/", "--node-key", "000000000000000000000000000000000000000000000000000000000000000e", "--keystore-path", "/tmp/karura/keystore-c3", "--bootnodes", "/dns/karura-coll-03-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWB48q6TvbNtRPA5JfaaTuxjvMV2kwooYyz7frVUJ6yHTK", "--public-addr", "/dns/karura-coll-03-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/karura/", "--execution=Native"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
