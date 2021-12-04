@@ -159,7 +159,7 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--base-path", "/basilisk/", "--bootnodes", "/dns/public-rpc-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--ws-external", "--unsafe-ws-external", "--rpc-methods", "Unsafe", "--rpc-cors", "all", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/"]
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--base-path", "/basilisk/", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/public-rpc-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--ws-external", "--unsafe-ws-external", "--rpc-methods", "Unsafe", "--rpc-cors", "all", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/"]
         ports:
         - containerPort: 9944
       volumes:
