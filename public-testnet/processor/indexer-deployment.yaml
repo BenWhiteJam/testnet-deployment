@@ -51,7 +51,7 @@ spec:
             - name: TYPES_JSON
               value: types.json
             - name: WS_PROVIDER_ENDPOINT_URI
-              value: ws://host.docker.internal:9988
+              value: ws://parachain-testnet.hydration.cloud/ws/
           image: subsquid/hydra-indexer:4
           name: indexer
           resources: {}

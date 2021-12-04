@@ -27,7 +27,9 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/basilisk/", "--node-key", "0000000000000000000000000000000000000000000000000000000000000009", "--keystore-path", "/tmp/basilisk/keystore-c1", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native"]
+          - mountPath: /mnt/basilisk1
+            name: basilisk1-storage 
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk1", "--node-key", "0000000000000000000000000000000000000000000000000000000000000009", "--keystore-path", "/tmp/basilisk/keystore-c1", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
@@ -35,7 +37,10 @@ spec:
       volumes:
         - name: persistent-storage
           persistentVolumeClaim:
-            claimName: efs-pv    
+            claimName: efs-pv
+        - name: basilisk1-storage
+          persistentVolumeClaim:
+            claimName: efs-basilisk1-storage
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -66,7 +71,9 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/basilisk/", "--node-key", "000000000000000000000000000000000000000000000000000000000000000a", "--keystore-path", "/tmp/basilisk/keystore-c2", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native"]
+          - mountPath: /mnt/basilisk2
+            name: basilisk2-storage
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk2", "--node-key", "000000000000000000000000000000000000000000000000000000000000000a", "--keystore-path", "/tmp/basilisk/keystore-c2", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
@@ -74,7 +81,10 @@ spec:
       volumes:
         - name: persistent-storage
           persistentVolumeClaim:
-            claimName: efs-pv    
+            claimName: efs-pv
+        - name: basilisk2-storage
+          persistentVolumeClaim:
+            claimName: efs-basilisk2-storage    
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -105,7 +115,9 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/basilisk/", "--node-key", "000000000000000000000000000000000000000000000000000000000000000b", "--keystore-path", "/tmp/basilisk/keystore-c3", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native"]
+          - mountPath: /mnt/basilisk3
+            name: basilisk3-storage
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk3", "--node-key", "000000000000000000000000000000000000000000000000000000000000000b", "--keystore-path", "/tmp/basilisk/keystore-c3", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
@@ -113,7 +125,10 @@ spec:
       volumes:
         - name: persistent-storage
           persistentVolumeClaim:
-            claimName: efs-pv    
+            claimName: efs-pv
+        - name: basilisk3-storage
+          persistentVolumeClaim:
+            claimName: efs-basilisk3-storage    
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -144,7 +159,7 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: persistent-storage
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--base-path", "/basilisk/", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--ws-external", "--unsafe-ws-external", "--rpc-methods", "Unsafe", "--rpc-cors", "all", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/"]
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--base-path", "/basilisk/", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--ws-external", "--unsafe-ws-external", "--rpc-methods", "Unsafe", "--rpc-cors", "all", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/"]
         ports:
         - containerPort: 9944
       volumes:

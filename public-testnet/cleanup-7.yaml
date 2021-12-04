@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cleanup-pod-7
+spec:
+  containers:
+  - name: cleanup-pod-7
+    image: redis
+    command: ["sh", "-c", "tail -f /dev/null"]
+    volumeMounts:
+    - name: basilisk3-storage
+      mountPath: /mnt/basilisk3
+    - name: karura1-storage
+      mountPath: /mnt/karura1
+  volumes:
+  - name: basilisk3-storage
+    persistentVolumeClaim:
+      claimName: efs-basilisk3-storage
+  - name: karura1-storage
+    persistentVolumeClaim:
+      claimName: efs-karura1-storage
