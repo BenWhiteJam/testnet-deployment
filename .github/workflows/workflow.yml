@@ -42,7 +42,7 @@ jobs:
         run: |
           kubectl config set-context --current --namespace=hydra-ui-test
           kubectl apply -f copy-pod.yaml -n hydra-ui-test
-          sleep 80
+          sleep 130
           kubectl cp basilisk-raw.json copy-pod:/tmp/
           kubectl delete po copy-pod
 
@@ -51,7 +51,7 @@ jobs:
       - name: Create cleanup pods
         working-directory: ./public-testnet
         run: kubectl apply $(ls cleanup*.yaml | awk ' { print " -f " $1 } ') -n hydra-ui-test
-      - name: Wait for pods to get running
+      - name: Wait for cleanup pods to get running
         run: sleep 120
       - name: Cleanup volumes
         run: |
@@ -65,6 +65,13 @@ jobs:
           kubectl exec cleanup-pod-4 -- bash -c "[ -d /mnt/polkadot6/chains ]; rm -rf /mnt/polkadot6/chains"
           kubectl exec cleanup-pod-4 -- bash -c "[ -d /mnt/polkadot7/chains ]; rm -rf /mnt/polkadot7/chains"
           kubectl exec cleanup-pod-5 -- bash -c "[ -d /mnt/polkadot8/chains ]; rm -rf /mnt/polkadot8/chains"
+          kubectl exec cleanup-pod-6 -- bash -c "[ -d /mnt/basilisk1/chains ]; rm -rf /mnt/basilisk1/chains"
+          kubectl exec cleanup-pod-6 -- bash -c "[ -d /mnt/basilisk2/chains ]; rm -rf /mnt/basilisk2/chains"
+          kubectl exec cleanup-pod-7 -- bash -c "[ -d /mnt/basilisk3/chains ]; rm -rf /mnt/basilisk3/chains"
+          kubectl exec cleanup-pod-7 -- bash -c "[ -d /mnt/karura1/chains ]; rm -rf /mnt/karura1/chains"
+          kubectl exec cleanup-pod-8 -- bash -c "[ -d /mnt/karura2/chains ]; rm -rf /mnt/karura2/chains"
+          kubectl exec cleanup-pod-8 -- bash -c "[ -d /mnt/karura3/chains ]; rm -rf /mnt/karura3/chains"
+      
       - name: Delete cleanup pods
         run: kubectl get pods --no-headers=true | awk '/cleanup/{print $1}'| xargs kubectl delete pod
       - name: Create relaychain manifests
