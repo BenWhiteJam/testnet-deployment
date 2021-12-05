@@ -4,6 +4,7 @@ kind: Namespace
 metadata:
   name: hydra-ui-test
 ---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
