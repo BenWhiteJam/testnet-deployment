@@ -84,11 +84,11 @@ jobs:
         run: kubectl apply -f parachain.yaml
       - name: Wait for basilisk parachain to deploy
         run: sleep 60
-      - name: Create karura parachain manifests
-        working-directory: ./public-testnet/parachains/karura
-        run: kubectl apply -f parachain.yaml
-      - name: Wait for karura parachain to deploy
-        run: sleep 60
+      #- name: Create karura parachain manifests
+      #  working-directory: ./public-testnet/parachains/karura
+      #  run: kubectl apply -f parachain.yaml
+      #- name: Wait for karura parachain to deploy
+      #  run: sleep 60
       - name: Register Basilisk Parachain
         run: |
           curl -H 'Authorization: ${{ secrets.AUTH_TOKEN }}' https://ci-para-reg.hydration.cloud/register ${{ secrets.AUTH_TOKEN }} &
