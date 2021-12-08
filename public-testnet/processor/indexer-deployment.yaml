@@ -1,12 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.26.0 (HEAD)
-  creationTimestamp: null
-  labels:
-    io.kompose.service: indexer
+  namespace: hydra-ui-test
   name: indexer
 spec:
   replicas: 1
@@ -17,10 +12,6 @@ spec:
     type: Recreate
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert
-        kompose.version: 1.26.0 (HEAD)
-      creationTimestamp: null
       labels:
         io.kompose.service: indexer
     spec:
@@ -33,7 +24,7 @@ spec:
             - name: BLOCK_HEIGHT
               value: "0"
             - name: DB_HOST
-              value: db
+              value: 192.168.171.191
             - name: DB_NAME
               value: indexer
             - name: DB_PASS
@@ -45,11 +36,11 @@ spec:
             - name: INDEXER_WORKERS
               value: "5"
             - name: REDIS_URI
-              value: redis://redis:6379/0
+              value: redis://192.168.140.91:6379/0
             - name: TYPES_ALIAS
-              value: typesAlias.json
+              value: /tmp/typesAlias.json
             - name: TYPES_JSON
-              value: types.json
+              value: /tmp/types.json
             - name: WS_PROVIDER_ENDPOINT_URI
               value: ws://parachain-testnet.hydration.cloud/ws/
           image: subsquid/hydra-indexer:4

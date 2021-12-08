@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: hydra-ui-test
   annotations:
     kompose.cmd: kompose convert
     kompose.version: 1.26.0 (HEAD)
@@ -27,7 +28,7 @@ spec:
         - image: redis:6.0-alpine
           name: redis
           ports:
-            - containerPort: 6379
+          - containerPort: 6379
           resources: {}
       restartPolicy: Always
 status: {}

@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: hydra-ui-test
   annotations:
     kompose.cmd: kompose convert
     kompose.version: 1.26.0 (HEAD)
@@ -28,9 +29,24 @@ spec:
             - name: PORT
               value: "8081"
             - name: REDIS_URI
-              value: redis://redis:6379/0
+              value: 192.168.140.91:6379/0:6379/0
           image: subsquid/hydra-indexer-status-service:4
           name: indexer-status-service
           resources: {}
       restartPolicy: Always
 status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: hydra-ui-test
+  name: indexer-status-service-svc
+spec:
+  ports:
+    - port: 8081
+      name: status
+      targetPort: 8081
+      protocol: TCP
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: indexer-status-service

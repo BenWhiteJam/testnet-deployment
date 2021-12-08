@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: hydra-ui-test
   annotations:
     kompose.cmd: kompose convert
     kompose.version: 1.26.0 (HEAD)
@@ -32,6 +33,8 @@ spec:
               value: postgres
           image: postgres:12
           name: db
+          ports:
+          - containerPort: 5432
           resources: {}
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
@@ -42,3 +45,19 @@ spec:
           persistentVolumeClaim:
             claimName: postgresvol
 status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: hydra-ui-test
+  name: postgres-service
+spec:
+  ports:
+    - name: "postgres-port"
+      port: 5432
+      targetPort: 5432
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: db  
+status:
+  loadBalancer: {}
