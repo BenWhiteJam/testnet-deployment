@@ -29,7 +29,7 @@ spec:
             - name: PORT
               value: "8081"
             - name: REDIS_URI
-              value: 192.168.140.91:6379/0:6379/0
+              value: redis://192.168.133.12:6379/0
           image: subsquid/hydra-indexer-status-service:4
           name: indexer-status-service
           resources: {}

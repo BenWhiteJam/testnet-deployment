@@ -27,7 +27,7 @@ spec:
       containers:
         - env:
             - name: DB_HOST
-              value: 192.168.171.191
+              value: 192.168.177.121
             - name: DB_NAME
               value: indexer
             - name: DB_PASS
