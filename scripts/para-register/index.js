@@ -3,6 +3,7 @@ const { Keyring } = require('@polkadot/keyring');
 const shell = require('shelljs');
 const yaml = require('js-yaml');
 const fs = require('fs');
+const path = require('path');
 
 require('dotenv').config();
 
@@ -11,13 +12,33 @@ let keyring;
 
 const RELAYCHAIN_ENDPOINT=process.env.RELAYCHAIN_ENDPOINT;
 const SUDO_SEED=process.env.SUDO_SEED;
+const API_AUTH_TOKEN=process.env.API_AUTH_TOKEN;
 
-if (!process.argv[2]) {
-  console.log(`Error: Missing path to k8s yaml.    
-Usage: node index.js ./parachain.yaml`               
-  );                                                    
-  process.exit(1);                                      
-}
+const GIT_REPO = process.env.TESTNET_DEPLOYMENT_REPO;
+const K8S_PARA_DEPLOYMENTS = process.env.K8S_PARA_DEPLOYMENTS;
+
+const express = require('express');
+const app = express();
+
+app.use(express.json());
+
+app.get('/register', async function (req, res) {
+  if (req.headers.authorization != API_AUTH_TOKEN) {
+    return res.status(401).end();
+  };
+
+  try {
+    await doParachainRegistration();
+    res.status(204).end();  
+  } catch(err) {
+    console.log(err);
+    
+    res.status(500).send(err.message).end();
+  }
+
+  cleanupTmpDir()
+});
+
 
 (async () => {
   const wsProvider = new WsProvider(RELAYCHAIN_ENDPOINT);
@@ -29,21 +50,91 @@ Usage: node index.js ./parachain.yaml`
   ]);                                                              
 
   console.log(`Connected to relay chain: ${ch} ${nodeVersion}`);
+ 
+  app.listen(3000, () => {
+    console.log('listenning on: 127.0.0.1:3000');
+  });
+})()
+
+async function doParachainRegistration() {
+  updateRepo();
+
+  let paraDeployments = findParachainDeployments();
+  
 
   const keyring = new Keyring({ type: 'sr25519' });
   const root = keyring.addFromUri(SUDO_SEED);
 
-  const { paraId, chain, image } = parseParaInfoFromDeployment(process.argv[2]);
+  ecrLogin();
+  for (const deployment of paraDeployments) {
+    const { paraId, chainParam, image } = parseParaInfoFromDeployment(deployment);
 
-  const { state, wasm } = getParaStateWasm(chain, paraId, image);
+    const chain = downloadChainspecAndReturnChain(chainParam);
 
-  await registerParachain(paraId, state, wasm, root);
+    const { state, wasm } = getParaStateWasm(chain, paraId, image);
 
-  await sudo(api.tx.paras.forceQueueAction(paraId), root);
+    await registerParachain(paraId, state, wasm, root);
 
-  console.log(`-- parachain ${paraId} registered --`);
-  process.exit(0);
-})();
+    await sudo(api.tx.paras.forceQueueAction(paraId), root);
+
+    console.log(`-- parachain ${paraId} registered --`);
+  }
+}
+
+function cleanupTmpDir() {
+  console.log(`Log: cleanupTmpDir()`);
+  const rmCmd = `rm -rf ./tmp/*`;
+
+  const rmCmdOut = shell.exec(rmCmd, { silent: true});
+  if (rmCmdOut.code !== 0) {
+    console.log(`Error: cleanup tmp dir. \n\t${rmCmdOut.stderr}`);
+    throw new Error(`Error cleanup tmp dir`);
+  }
+}
+
+function downloadChainspecAndReturnChain(chainParam) {
+  console.log(`Log: downloadChainspecAndReturnChain()`);
+  if (/.json$/.test(chainParam)) {
+    let lastSlash = chainParam.lastIndexOf('/') + 1;
+
+    const specFile = chainParam.substr(lastSlash);
+
+    const s3DownloadCmd = `aws s3 cp ${process.env.CHAINSPEC_S3_BUCKET}/${specFile} ./tmp/${specFile}`;
+    const s3DownloadOut = shell.exec(s3DownloadCmd, { silent: true});
+    if (s3DownloadOut.code !== 0) {
+      console.log(`Error: Failed to download chainspec. \n\t${s3DownloadOut.stderr}`);
+      throw new Error('Fialed to download chainspec');
+    }
+
+    return `./tmp/${specFile}`;
+  } else {
+    return chainParam;
+  }
+}
+
+function updateRepo() {
+  console.log(`Log: updateRepo()`);
+  let cmd = `cd ${GIT_REPO} && git pull`;
+
+  const stateOut = shell.exec(cmd, { silent: true});
+  if (stateOut.code !== 0) {
+    console.log(`Error: Failed to pull repo. \n\t${stateOut.stderr}`);
+    throw new Error('Fialed to pull repo');
+  }
+}
+
+function findParachainDeployments() {
+  console.log(`Log: findParachainDeployments()`);
+  let path = `${GIT_REPO}/${K8S_PARA_DEPLOYMENTS}`;
+
+  let dirs = fs.readdirSync(path);
+
+  for (var i = 0; i < dirs.length; i++) {
+    dirs[i] = `${path}/${dirs[i]}/parachain.yaml`
+  };
+
+  return dirs;
+}
 
 function parseParaInfoFromDeployment(path) {
   console.log(`Log: parseParaInfoFromDeployment()`);
@@ -82,8 +173,19 @@ function parseParaInfoFromDeployment(path) {
 
   return {
     paraId: paraId,
-    chain: chain,
+    chainParam: chain,
     image: image 
+  }
+}
+
+function ecrLogin() {
+  console.log(`Log: ecrLogin()`);
+  const ecrLoginCmd = 'aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 601305236792.dkr.ecr.eu-west-1.amazonaws.com';
+
+  const ecrLoginOut = shell.exec(ecrLoginCmd, { silent: true});
+  if (ecrLoginOut.code !== 0) {
+    console.log(`Error: Failed ECR login \n\t${ecrLoginOut.stderr}`);
+    throw new Error('Fialed ECR login');
   }
 }
 
@@ -101,20 +203,38 @@ function registerParachain(paraId, state, wasm, root) {
 
 function getParaStateWasm(chain, paraId, image) {
   console.log(`Log: getParaStateWasm()`);
+ 
+  const pullImageCmd = `docker pull ${image}`;
+  const cleanupCmd = `docker rmi ${image}`;
 
-  const exportStateCmd = `docker run --rm ${image} export-genesis-state --chain ${chain} --parachain-id ${paraId}`;
-  const exportWasmCmd = `docker run --rm ${image} export-genesis-wasm --chain ${chain}`;
+  const inDockerPath = chain.substr(1);
+
+  const fullPath = path.resolve(chain);
+  const exportStateCmd = `docker run -v ${fullPath}:${inDockerPath} --rm ${image} export-genesis-state --chain ${inDockerPath} --parachain-id ${paraId}`;
+  const exportWasmCmd = `docker run -v ${fullPath}:${inDockerPath} --rm ${image} export-genesis-wasm --chain ${inDockerPath}`;
+
+  const pullImageOut = shell.exec(pullImageCmd, { silent: true});
+  if (pullImageOut.code !== 0) {
+    console.log(`Error: Failed to pull image. \n\t${pullImageOut.stderr}`);
+    throw new Error('Fialed to pull docker image');
+  }
 
   const stateOut = shell.exec(exportStateCmd, { silent: true});
   if (stateOut.code !== 0) {
     console.log(`Error: Failed to export export-genesis-state. \n\t${stateOut.stderr}`);
-    process.exit(1);
+    throw new Error('Fialed to export-genesis-state');
   }
 
   const wasmOut = shell.exec(exportWasmCmd, { silent: true});
   if (wasmOut.code !== 0) {
     console.log(`Error: Failed to export export-genesis-wasm. \n\t${wasmOut.stderr}`);
-    process.exit(1);
+    throw new Error('Fialed to export-genesis-wasm');
+  }
+
+  const cleanupOut = shell.exec(cleanupCmd, { silent: true});
+  if (cleanupOut.code !== 0) {
+    console.log(`Error: Failed to remove image. \n\t${cleanupOut.stderr}`);
+    throw new Error('Fialed to remove image');
   }
 
   return { 

@@ -9,9 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@polkadot/api": "^5.9.1",
+    "@polkadot/api": "^6.9.2",
     "@polkadot/keyring": "^7.3.1",
     "dotenv": "^10.0.0",
+    "express": "^4.17.1",
     "js-yaml": "^4.1.0",
     "shelljs": "^0.8.4"
   }
