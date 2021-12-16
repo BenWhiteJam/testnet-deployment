@@ -2,3 +2,4 @@ basilisk-testnet/relaychains/keystore-v1
 basilisk-testnet/relaychains/keystore-v2
 basilisk-testnet/relaychains/keystore-v3
 basilisk-testnet/relaychains/keystore-v4
+scripts/para-register/.env
