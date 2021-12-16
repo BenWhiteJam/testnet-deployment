@@ -41,95 +41,95 @@ spec:
         - name: basilisk1-storage
           persistentVolumeClaim:
             claimName: efs-basilisk1-storage
-#---
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  namespace: hydra-ui-test
-#  name: parachain-coll-02-deployment
-#spec:
-#  selector:
-#    matchLabels:
-#      app.kubernetes.io/name: parachain-coll-02
-#  replicas: 1
-#  template:
-#    metadata:
-#      labels:
-#        app.kubernetes.io/name: parachain-coll-02
-#    spec:
-#      containers:
-#      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/basilisk:latest
-#        resources:
-#          limits:
-#            memory: "5000Mi"
-#            cpu: "3000m"
-#          requests:
-#            memory: "4000Mi"
-#            cpu: "3000m"
-#        imagePullPolicy: Always
-#        name: parachain-coll-02
-#        volumeMounts:
-#          - mountPath: /tmp
-#            name: persistent-storage
-#          - mountPath: /mnt/basilisk2
-#            name: basilisk2-storage
-#        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk2", "--node-key", "000000000000000000000000000000000000000000000000000000000000000a", "--keystore-path", "/tmp/basilisk/keystore-c2", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-02-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native", "--log", "debug"]
-#        ports:
-#        - containerPort: 9944
-#        - containerPort: 9933
-#        - containerPort: 30333
-#      volumes:
-#        - name: persistent-storage
-#          persistentVolumeClaim:
-#            claimName: efs-pv
-#        - name: basilisk2-storage
-#          persistentVolumeClaim:
-#            claimName: efs-basilisk2-storage    
-#---
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  namespace: hydra-ui-test
-#  name: parachain-coll-03-deployment
-#spec:
-#  selector:
-#    matchLabels:
-#      app.kubernetes.io/name: parachain-coll-03
-#  replicas: 1
-#  template:
-#    metadata:
-#      labels:
-#        app.kubernetes.io/name: parachain-coll-03
-#    spec:
-#      containers:
-#      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/basilisk:latest
-#        resources:
-#          limits:
-#            memory: "5000Mi"
-#            cpu: "3000m"
-#          requests:
-#            memory: "4000Mi"
-#            cpu: "3000m"
-#        imagePullPolicy: Always
-#        name: parachain-coll-03
-#        volumeMounts:
-#          - mountPath: /tmp
-#            name: persistent-storage
-#          - mountPath: /mnt/basilisk3
-#            name: basilisk3-storage
-#        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk3", "--node-key", "000000000000000000000000000000000000000000000000000000000000000b", "--keystore-path", "/tmp/basilisk/keystore-c3", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-03-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native"]
-#        ports:
-#        - containerPort: 9944
-#        - containerPort: 9933
-#        - containerPort: 30333
-#      volumes:
-#        - name: persistent-storage
-#          persistentVolumeClaim:
-#            claimName: efs-pv
-#        - name: basilisk3-storage
-#          persistentVolumeClaim:
-#            claimName: efs-basilisk3-storage    
-#
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: hydra-ui-test
+  name: parachain-coll-02-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: parachain-coll-02
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: parachain-coll-02
+    spec:
+      containers:
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/basilisk:latest
+        resources:
+          limits:
+            memory: "5000Mi"
+            cpu: "3000m"
+          requests:
+            memory: "4000Mi"
+            cpu: "3000m"
+        imagePullPolicy: Always
+        name: parachain-coll-02
+        volumeMounts:
+          - mountPath: /tmp
+            name: persistent-storage
+          - mountPath: /mnt/basilisk2
+            name: basilisk2-storage
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk2", "--node-key", "000000000000000000000000000000000000000000000000000000000000000a", "--keystore-path", "/tmp/basilisk/keystore-c2", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-02-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native", "--log", "debug"]
+        ports:
+        - containerPort: 9944
+        - containerPort: 9933
+        - containerPort: 30333
+      volumes:
+        - name: persistent-storage
+          persistentVolumeClaim:
+            claimName: efs-pv
+        - name: basilisk2-storage
+          persistentVolumeClaim:
+            claimName: efs-basilisk2-storage    
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: hydra-ui-test
+  name: parachain-coll-03-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: parachain-coll-03
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: parachain-coll-03
+    spec:
+      containers:
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/basilisk:latest
+        resources:
+          limits:
+            memory: "5000Mi"
+            cpu: "3000m"
+          requests:
+            memory: "4000Mi"
+            cpu: "3000m"
+        imagePullPolicy: Always
+        name: parachain-coll-03
+        volumeMounts:
+          - mountPath: /tmp
+            name: persistent-storage
+          - mountPath: /mnt/basilisk3
+            name: basilisk3-storage
+        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk3", "--node-key", "000000000000000000000000000000000000000000000000000000000000000b", "--keystore-path", "/tmp/basilisk/keystore-c3", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-03-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native"]
+        ports:
+        - containerPort: 9944
+        - containerPort: 9933
+        - containerPort: 30333
+      volumes:
+        - name: persistent-storage
+          persistentVolumeClaim:
+            claimName: efs-pv
+        - name: basilisk3-storage
+          persistentVolumeClaim:
+            claimName: efs-basilisk3-storage    
+
 ---
 apiVersion: apps/v1
 kind: Deployment
