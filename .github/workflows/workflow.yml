@@ -2,7 +2,7 @@ name: Deploy on Kubernetes Cluster
 on:
   push:
     branches:
-      - main
+      - NONE
   repository_dispatch:
     types: [run-k8s-deployment]
 jobs:
