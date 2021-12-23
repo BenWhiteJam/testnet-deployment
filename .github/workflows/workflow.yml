@@ -43,7 +43,7 @@ jobs:
         working-directory: ./public-testnet
         run: kubectl apply $(ls cleanup*.yaml | awk ' { print " -f " $1 } ') -n default
       - name: Wait for cleanup pods to get running
-        run: sleep 30
+        run: sleep 80
       - name: Cleanup and copy volumes
         working-directory: ./public-testnet
         run: |
