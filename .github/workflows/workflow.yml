@@ -2,7 +2,7 @@ name: Deploy on Kubernetes Cluster
 on:
   push:
     branches:
-      - NONE
+      - main
   repository_dispatch:
     types: [run-k8s-deployment]
 jobs:
@@ -37,25 +37,17 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           source: 's3://hydradx-config-bucket/testnet/basilisk-raw.json'
           dest: './public-testnet/basilisk-raw.json'
-      - name: Copy configuration file to kubernetes
-        working-directory: ./public-testnet
-        run: |
-          kubectl config set-context --current --namespace=hydra-ui-test
-          kubectl apply -f copy-pod.yaml -n hydra-ui-test
-          sleep 130
-          kubectl cp basilisk-raw.json copy-pod:/tmp/
-          kubectl delete po copy-pod
-
       - name: Delete deployments
-        run: kubectl delete --all deployments --namespace=hydra-ui-test
+        run: kubectl delete --all deployments --namespace=default
       - name: Create cleanup pods
         working-directory: ./public-testnet
-        run: kubectl apply $(ls cleanup*.yaml | awk ' { print " -f " $1 } ') -n hydra-ui-test
+        run: kubectl apply $(ls cleanup*.yaml | awk ' { print " -f " $1 } ') -n default
       - name: Wait for cleanup pods to get running
-        run: sleep 120
-      - name: Cleanup volumes
+        run: sleep 30
+      - name: Cleanup and copy volumes
+        working-directory: ./public-testnet
         run: |
-          kubectl config set-context --current --namespace=hydra-ui-test
+          kubectl config set-context --current --namespace=default
           kubectl exec cleanup-pod-1 -- bash -c "[ -d /mnt/public-node/chains ]; rm -rf /mnt/public-node/chains"
           kubectl exec cleanup-pod-1 -- bash -c "[ -d /mnt/polkadot1/chains ]; rm -rf /mnt/polkadot1/chains"
           kubectl exec cleanup-pod-2 -- bash -c "[ -d /mnt/polkadot2/chains ]; rm -rf /mnt/polkadot2/chains"
@@ -68,9 +60,21 @@ jobs:
           kubectl exec cleanup-pod-6 -- bash -c "[ -d /mnt/basilisk1/chains ]; rm -rf /mnt/basilisk1/chains"
           kubectl exec cleanup-pod-6 -- bash -c "[ -d /mnt/basilisk2/chains ]; rm -rf /mnt/basilisk2/chains"
           kubectl exec cleanup-pod-7 -- bash -c "[ -d /mnt/basilisk3/chains ]; rm -rf /mnt/basilisk3/chains"
-          kubectl exec cleanup-pod-7 -- bash -c "[ -d /mnt/karura1/chains ]; rm -rf /mnt/karura1/chains"
-          kubectl exec cleanup-pod-8 -- bash -c "[ -d /mnt/karura2/chains ]; rm -rf /mnt/karura2/chains"
-          kubectl exec cleanup-pod-8 -- bash -c "[ -d /mnt/karura3/chains ]; rm -rf /mnt/karura3/chains"
+          kubectl exec cleanup-pod-7 -- bash -c "[ -d /mnt/basilisk-public-node/chains ]; rm -rf /mnt/basilisk-public-node/chains"
+          kubectl cp basilisk-raw.json cleanup-pod-1:/mnt/public-node/config
+          kubectl cp basilisk-raw.json cleanup-pod-1:/mnt/polkadot1/config
+          kubectl cp basilisk-raw.json cleanup-pod-2:/mnt/polkadot2/config
+          kubectl cp basilisk-raw.json cleanup-pod-2:/mnt/polkadot3/config
+          kubectl cp basilisk-raw.json cleanup-pod-3:/mnt/polkadot4/config
+          kubectl cp basilisk-raw.json cleanup-pod-3:/mnt/polkadot5/config
+          kubectl cp basilisk-raw.json cleanup-pod-4:/mnt/polkadot6/config
+          kubectl cp basilisk-raw.json cleanup-pod-4:/mnt/polkadot7/config
+          kubectl cp basilisk-raw.json cleanup-pod-5:/mnt/polkadot8/config
+          kubectl cp basilisk-raw.json cleanup-pod-6:/mnt/basilisk1/config
+          kubectl cp basilisk-raw.json cleanup-pod-6:/mnt/basilisk2/config
+          kubectl cp basilisk-raw.json cleanup-pod-7:/mnt/basilisk3/config
+          kubectl cp basilisk-raw.json cleanup-pod-7:/mnt/basilisk-public-node/config
+          
       
       - name: Delete cleanup pods
         run: kubectl get pods --no-headers=true | awk '/cleanup/{print $1}'| xargs kubectl delete pod
@@ -78,12 +82,12 @@ jobs:
         working-directory: ./public-testnet/relaychains
         run: kubectl apply -f relaychain.yaml
       - name: Wait for relaychain to deploy
-        run: sleep 60
+        run: sleep 30
       - name: Create basilisk parachain manifests
         working-directory: ./public-testnet/parachains/basilisk
         run: kubectl apply -f parachain.yaml
       - name: Wait for basilisk parachain to deploy
-        run: sleep 60
+        run: sleep 20
       #- name: Create karura parachain manifests
       #  working-directory: ./public-testnet/parachains/karura
       #  run: kubectl apply -f parachain.yaml
@@ -108,7 +112,4 @@ jobs:
         run: |
           git clone https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
           bash webhook/send.sh $JOB_STATUS $WEBHOOK_URL
-        shell: bash      
-
-
-
+        shell: bash

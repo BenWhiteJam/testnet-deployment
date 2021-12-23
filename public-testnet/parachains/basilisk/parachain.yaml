@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: parachain-coll-01-deployment
 spec:
   selector:
@@ -25,27 +25,22 @@ spec:
         imagePullPolicy: Always
         name: parachain-coll-01
         volumeMounts:
-          - mountPath: /tmp
-            name: persistent-storage
           - mountPath: /mnt/basilisk1
             name: basilisk1-storage 
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk1", "--node-key", "0000000000000000000000000000000000000000000000000000000000000009", "--keystore-path", "/tmp/basilisk/keystore-c1", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native", "--log", "debug"]
+        args: ["--chain", "/mnt/basilisk1/config/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk1", "--node-key", "0000000000000000000000000000000000000000000000000000000000000009", "--keystore-path", "/mnt/basilisk1/config/keystore-c1", "--bootnodes", "/dns/coll-01-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-01-svc.default.svc.cluster.local/tcp/30333", "--", "--chain", "/mnt/basilisk1/config/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native", "--log", "debug"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
         - containerPort: 30333
       volumes:
-        - name: persistent-storage
-          persistentVolumeClaim:
-            claimName: efs-pv
         - name: basilisk1-storage
           persistentVolumeClaim:
-            claimName: efs-basilisk1-storage
+            claimName: basilisk1-claim
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: parachain-coll-02-deployment
 spec:
   selector:
@@ -69,27 +64,22 @@ spec:
         imagePullPolicy: Always
         name: parachain-coll-02
         volumeMounts:
-          - mountPath: /tmp
-            name: persistent-storage
           - mountPath: /mnt/basilisk2
             name: basilisk2-storage
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk2", "--node-key", "000000000000000000000000000000000000000000000000000000000000000a", "--keystore-path", "/tmp/basilisk/keystore-c2", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-02-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native", "--log", "debug"]
+        args: ["--chain", "/mnt/basilisk2/config/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk2", "--node-key", "000000000000000000000000000000000000000000000000000000000000000a", "--keystore-path", "/mnt/basilisk2/config/keystore-c2", "--bootnodes", "/dns/coll-01-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-02-svc.default.svc.cluster.local/tcp/30333", "--", "--chain", "/mnt/basilisk2/config/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native", "--log", "debug"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
         - containerPort: 30333
       volumes:
-        - name: persistent-storage
-          persistentVolumeClaim:
-            claimName: efs-pv
         - name: basilisk2-storage
           persistentVolumeClaim:
-            claimName: efs-basilisk2-storage    
+            claimName: basilisk2-claim    
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: parachain-coll-03-deployment
 spec:
   selector:
@@ -113,28 +103,23 @@ spec:
         imagePullPolicy: Always
         name: parachain-coll-03
         volumeMounts:
-          - mountPath: /tmp
-            name: persistent-storage
           - mountPath: /mnt/basilisk3
             name: basilisk3-storage
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk3", "--node-key", "000000000000000000000000000000000000000000000000000000000000000b", "--keystore-path", "/tmp/basilisk/keystore-c3", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-03-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native"]
+        args: ["--chain", "/mnt/basilisk3/config/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk3", "--node-key", "000000000000000000000000000000000000000000000000000000000000000b", "--keystore-path", "/mnt/basilisk3/config/keystore-c3", "--bootnodes", "/dns/coll-01-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-03-svc.default.svc.cluster.local/tcp/30333", "--", "--chain", "/mnt/basilisk3/config/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
         - containerPort: 30333
       volumes:
-        - name: persistent-storage
-          persistentVolumeClaim:
-            claimName: efs-pv
         - name: basilisk3-storage
           persistentVolumeClaim:
-            claimName: efs-basilisk3-storage    
+            claimName: basilisk3-claim
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: public-rpc-deployment
 spec:
   selector:
@@ -158,20 +143,20 @@ spec:
         imagePullPolicy: Always
         name: public-rpc
         volumeMounts:
-          - mountPath: /tmp
-            name: persistent-storage
-        args: ["--chain", "/tmp/basilisk-raw.json", "--parachain-id", "2090", "--base-path", "/basilisk/", "--bootnodes", "/dns/coll-01-svc.hydra-ui-test.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/public-rpc-svc.hydra-ui-test.svc.cluster.local/tcp/30333", "--ws-external", "--unsafe-ws-external", "--rpc-methods", "Unsafe", "--rpc-cors", "all", "--", "--chain", "/tmp/westend-raw.json", "--base-path", "/basilisk/"]
+          - mountPath: /mnt/basilisk-public-node
+            name: parachain-public-storage
+        args: ["--chain", "/mnt/basilisk-public-node/config/basilisk-raw.json", "--parachain-id", "2090", "--base-path", "/basilisk/", "--bootnodes", "/dns/coll-01-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/public-rpc-svc.default.svc.cluster.local/tcp/30333", "--ws-external", "--unsafe-ws-external", "--rpc-methods", "Unsafe", "--rpc-cors", "all", "--", "--chain", "/mnt/basilisk-public-node/config/westend-raw.json", "--base-path", "/basilisk/"]
         ports:
         - containerPort: 9944
       volumes:
-        - name: persistent-storage
+        - name: parachain-public-storage
           persistentVolumeClaim:
-            claimName: efs-pv
+            claimName: basilisk-public-claim
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: coll-01-svc
 spec:
   ports:
@@ -193,7 +178,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: coll-02-svc
 spec:
   ports:
@@ -216,7 +201,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: coll-03-svc
 spec:
   ports:
@@ -238,7 +223,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: public-rpc-svc
 spec:
   ports:

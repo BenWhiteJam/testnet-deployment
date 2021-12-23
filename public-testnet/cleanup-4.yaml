@@ -15,7 +15,7 @@ spec:
   volumes:
   - name: node6-storage
     persistentVolumeClaim:
-      claimName: efs-node6-storage
+      claimName: node6-claim
   - name: node7-storage
     persistentVolumeClaim:
-      claimName: efs-node7-storage   
+      claimName: node7-claim   

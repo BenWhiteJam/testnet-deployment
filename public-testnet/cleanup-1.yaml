@@ -8,14 +8,14 @@ spec:
     image: redis
     command: ["sh", "-c", "tail -f /dev/null"]
     volumeMounts:
-    - name: efs-public-rpc-storage
+    - name: public-rpc-storage
       mountPath: /mnt/public-node
     - name: node1-storage
       mountPath: /mnt/polkadot1 
   volumes:
-  - name: efs-public-rpc-storage
+  - name: public-rpc-storage
     persistentVolumeClaim:
       claimName: efs-public-rpc-storage
-  - name: node1-storage
+  - name: public-node-claim
     persistentVolumeClaim:
-      claimName: efs-node1-storage 
+      claimName: node1-claim

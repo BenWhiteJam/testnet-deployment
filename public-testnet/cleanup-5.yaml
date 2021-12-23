@@ -13,4 +13,4 @@ spec:
   volumes:
   - name: node8-storage
     persistentVolumeClaim:
-      claimName: efs-node8-storage
+      claimName: node8-claim

@@ -157,7 +157,7 @@ spec:
         name: relaychain-validator04
         volumeMounts:
           - mountPath: /mnt/polkadot4
-            name: node4-storage
+            name: node4-storage  
         command: ["/polkadot/polkadot"]
         args: ["--chain", "/mnt/polkadot4/config/westend-raw.json", "--base-path", "/mnt/polkadot4", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000004", "--keystore-path", "/mnt/polkadot4/config/keystore-v4", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator04-svc.default.svc.cluster.local/tcp/30333", "--log", "debug"]
         ports:
@@ -366,20 +366,15 @@ spec:
         imagePullPolicy: Always
         name: relaychain-validator01
         volumeMounts:
-          - mountPath: /tmp/testnet
-            name: mntdatas3fs
           - mountPath: /mnt/public-node
-            name: efs-public-rpc-storage
+            name: public-rpc-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/testnet/westend-raw.json", "--base-path", "/mnt/public-node", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/public-rpc-deployment-svc.default.svc.cluster.local/tcp/30333"]
+        args: ["--chain", "/mnt/public-node/config/westend-raw.json", "--base-path", "/mnt/public-node", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/public-rpc-deployment-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
-        - name: mntdatas3fs
-          hostPath:
-            path: /mnt/s3data
-        - name: efs-public-rpc-storage
+        - name: public-rpc-storage
           persistentVolumeClaim:
             claimName: public-node-claim
 ---            

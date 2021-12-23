@@ -15,7 +15,7 @@ spec:
   volumes:
   - name: basilisk1-storage
     persistentVolumeClaim:
-      claimName: efs-basilisk1-storage
+      claimName: basilisk1-claim
   - name: basilisk2-storage
     persistentVolumeClaim:
-      claimName: efs-basilisk2-storage
+      claimName: basilisk2-claim

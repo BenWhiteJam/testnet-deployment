@@ -2,12 +2,12 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  namespace: hydra-ui-test
-  name: parachain-testnet-ingress
+  namespace: default
+  name: parachain-basilisk-ingress
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/group.name: paractestnet
+    alb.ingress.kubernetes.io/group.name: parachain-basilisk
     alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=4000
     alb.ingress.kubernetes.io/auth-session-timeout: '86400'
     alb.ingress.kubernetes.io/target-type: ip
@@ -15,12 +15,12 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-path: /
     alb.ingress.kubernetes.io/healthcheck-port: '80'
     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=600
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:601305236792:certificate/e8c76b77-0fff-450b-8782-d45700c1d9ee
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:601305236792:certificate/fc2bd600-30c9-4e3a-b50c-381c903e32a3
   labels:
     app: public-rpc-expose
 spec:
   rules:
-    - host: parachain-testnet.hydration.cloud
+    - host: basilisk-parachain.hydration.cloud
       http:
         paths:
           - path: /ws/
