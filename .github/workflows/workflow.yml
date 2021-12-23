@@ -82,7 +82,7 @@ jobs:
         working-directory: ./public-testnet/relaychains
         run: kubectl apply -f relaychain.yaml
       - name: Wait for relaychain to deploy
-        run: sleep 30
+        run: sleep 90
       - name: Create basilisk parachain manifests
         working-directory: ./public-testnet/parachains/basilisk
         run: kubectl apply -f parachain.yaml
