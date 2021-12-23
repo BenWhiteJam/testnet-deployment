@@ -15,7 +15,7 @@ spec:
   volumes:
   - name: public-rpc-storage
     persistentVolumeClaim:
-      claimName: efs-public-rpc-storage
-  - name: public-node-claim
+      claimName: public-node-claim
+  - name: node1-storage
     persistentVolumeClaim:
       claimName: node1-claim
