@@ -97,6 +97,22 @@ jobs:
         run: |
           curl -H 'Authorization: ${{ secrets.AUTH_TOKEN }}' https://ci-para-reg.hydration.cloud/register ${{ secrets.AUTH_TOKEN }} &
 
+      - name: Delete Indexer and Processor Volume Claims
+        run: |
+          kubectl delete pvc postgresvol
+          kubectl delete pvc hydraindexervol
+          kubectl delete pvc basiliskapivol
+          
+      - name: Deploy Indexer and Processor
+        working-directory: ./public-testnet/processor
+        run: |
+          kubectl apply -f postgres-pv.yaml
+          kubectl apply -f indexer-pv.yaml
+          kubectl apply -f postgres-deployment.yaml
+          kubectl apply -f indexer-deployment.yaml
+          kubectl apply -f basilisk-api-deployment.yaml
+
+
   inform-deployment-success:
     needs: run-k8s-deployment
     runs-on: ubuntu-latest
