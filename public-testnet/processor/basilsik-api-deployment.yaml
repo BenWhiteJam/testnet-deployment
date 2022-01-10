@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: basilisk-api
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: basilisk-api 
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: basilisk-api 
+    spec:
+      containers:
+      - image: postgres:12
+        env:
+          - name: POSTGRES_PASSWORD
+            value: postgres
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_DB
+            value: basilisk-api-db
+        name: postgres 
+        ports:
+          - containerPort: 5432
+        volumeMounts:
+          - mountPath: /var/lib/postgresql/data 
+            name: basilisk-api-vol
+            subPath: pg 
+
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/basilisk-api:latest
+        name: processor
+        command: [ "/bin/sh", "-c" ]
+        args: ["npm run processor:migrate && npm run processor:db:create-migration initial && npm run processor:db:migrate && yarn run processor:start"]
+        env:
+          - name: DB_NAME
+            value: basilisk-api-db
+          - name: DB_USER
+            value: postgres
+          - name: DB_PASS
+            value: postgres
+          - name: DB_HOST
+            value: 127.0.0.1
+          - name: DB_PORT
+            value: "5432"
+          - name: DEBUG
+            value: "index-builder:*"
+          - name: TYPEORM_LOGGING
+            value: "error"
+          - name: "INDEXER_ENDPOINT_URL"
+            value: http://indexer-gw-service:8080/v1/graphql
+          - name: GRAPHQL_SERVER_HOST
+            value: 127.0.0.1
+        volumeMounts:
+          - name: basilisk-api-vol
+            mountPath: /mnt/data/
+            subPath: processor
+      
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/basilisk-api:latest
+        name: query-node 
+        command: [ "/bin/sh", "-c" ]
+        args: ["yarn run processor:query-node:start"]
+        env:
+          - name: DB_NAME
+            value: basilisk-api-db
+          - name: DB_USER
+            value: postgres
+          - name: DB_PASS
+            value: postgres
+          - name: DB_HOST
+            value: 127.0.0.1
+          - name: DB_PORT
+            value: "5432"
+          - name: DEBUG
+            value: "index-builder:*"
+          - name: TYPEORM_LOGGING
+            value: "error"
+          - name: "INDEXER_ENDPOINT_URL"
+            value: http://indexer-gw-service:8080/v1/graphql
+          - name: GRAPHQL_SERVER_HOST
+            value: 127.0.0.1
+        ports:
+          - containerPort: 4000
+        volumeMounts:
+          - name: basilisk-api-vol
+            mountPath: /mnt/data/
+            subPath: query-node 
+
+      volumes:
+        - name: basilisk-api-vol 
+          persistentVolumeClaim:
+            claimName: basiliskapivol
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: processor-query-service
+spec:
+  ports:
+    - name: query-node
+      port: 4000 
+      targetPort: 4000
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: basilisk-api
+  type: NodePort
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: basiliskapivol
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: gp2
+  resources:
+    requests: 
+      storage: 40Gi
+---
