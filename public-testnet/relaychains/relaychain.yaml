@@ -33,7 +33,7 @@ spec:
           - mountPath: /mnt/polkadot1
             name: node1-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/mnt/polkadot1/config/westend-raw.json", "--base-path", "/mnt/polkadot1", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "/mnt/polkadot1/config/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator01-svc.default.svc.cluster.local/tcp/30333", "--log", "debug"]
+        args: ["--chain", "/mnt/polkadot1/config/westend-raw.json", "--base-path", "/mnt/polkadot1", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "/mnt/polkadot1/config/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator01-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
@@ -75,7 +75,7 @@ spec:
           - mountPath: /mnt/polkadot2
             name: node2-storage  
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/mnt/polkadot2/config/westend-raw.json", "--base-path", "/mnt/polkadot2", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000002", "--keystore-path", "/mnt/polkadot2/config/keystore-v2", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator02-svc.default.svc.cluster.local/tcp/30333", "--log", "debug"]
+        args: ["--chain", "/mnt/polkadot2/config/westend-raw.json", "--base-path", "/mnt/polkadot2", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000002", "--keystore-path", "/mnt/polkadot2/config/keystore-v2", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator02-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
@@ -117,7 +117,7 @@ spec:
           - mountPath: /mnt/polkadot3
             name: node3-storage  
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/mnt/polkadot3/config/westend-raw.json", "--base-path", "/mnt/polkadot3", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000003", "--keystore-path", "/mnt/polkadot3/config/keystore-v3", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator03-svc.default.svc.cluster.local/tcp/30333", "--log", "debug"]
+        args: ["--chain", "/mnt/polkadot3/config/westend-raw.json", "--base-path", "/mnt/polkadot3", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000003", "--keystore-path", "/mnt/polkadot3/config/keystore-v3", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator03-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
@@ -159,7 +159,7 @@ spec:
           - mountPath: /mnt/polkadot4
             name: node4-storage  
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/mnt/polkadot4/config/westend-raw.json", "--base-path", "/mnt/polkadot4", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000004", "--keystore-path", "/mnt/polkadot4/config/keystore-v4", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator04-svc.default.svc.cluster.local/tcp/30333", "--log", "debug"]
+        args: ["--chain", "/mnt/polkadot4/config/westend-raw.json", "--base-path", "/mnt/polkadot4", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000004", "--keystore-path", "/mnt/polkadot4/config/keystore-v4", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator04-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
