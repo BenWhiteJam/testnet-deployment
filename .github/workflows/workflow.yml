@@ -40,7 +40,7 @@ jobs:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           source: 's3://hydradx-config-bucket/testnet/'
-          dest: './public-testnet/config/'
+          dest: '/home/runner/work/testnet-deployment/testnet-deployment/public-testnet/config'
       - name: Delete deployments
         run: kubectl delete --all deployments --namespace=default
       - name: Create cleanup pods
