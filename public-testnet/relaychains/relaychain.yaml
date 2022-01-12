@@ -33,10 +33,10 @@ spec:
           - mountPath: /mnt/polkadot1
             name: node1-storage
           - mountPath: /home/runner/work/testnet-deployment/testnet-deployment/public-testnet/config
-            subPath: /tmp/testnet-config
+            subPath: testnet-config
             name: config
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/testnet-config/westend-raw.json", "--base-path", "/mnt/polkadot1", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "/tmp/testnet-config/relaychain/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator01-svc.default.svc.cluster.local/tcp/30333", "--log", "debug"]
+        args: ["--chain", "testnet-config/westend-raw.json", "--base-path", "/mnt/polkadot1", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "testnet-config/relaychain/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator01-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
