@@ -32,11 +32,8 @@ spec:
         volumeMounts:
           - mountPath: /mnt/polkadot1
             name: node1-storage
-          - mountPath: /home/runner/work/testnet-deployment/testnet-deployment/public-testnet/config
-            subPath: testnet-config
-            name: config
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "testnet-config/westend-raw.json", "--base-path", "/mnt/polkadot1", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "testnet-config/relaychain/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator01-svc.default.svc.cluster.local/tcp/30333"]
+        args: ["--chain", "/mnt/polkadot1/config/westend-raw.json", "--base-path", "/mnt/polkadot1", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "/mnt/polkadot1/config/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator01-svc.default.svc.cluster.local/tcp/30333", "--log", "debug"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
@@ -44,7 +41,6 @@ spec:
         - name: node1-storage
           persistentVolumeClaim:
             claimName: node1-claim
-        - name: config    
 ---
 apiVersion: apps/v1
 kind: Deployment

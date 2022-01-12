@@ -34,13 +34,13 @@ jobs:
       - name: whereami
         run: pwd
 
-      - name: Download Config Files
+      - name: Download Basilisk configuration file
         uses: prewk/s3-cp-action@v2
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          source: 's3://hydradx-config-bucket/testnet/'
-          dest: '/home/runner/work/testnet-deployment/testnet-deployment/public-testnet/config'
+          source: 's3://hydradx-config-bucket/testnet/basilisk-raw.json'
+          dest: './public-testnet/basilisk-raw.json'
       - name: Delete deployments
         run: kubectl delete --all deployments --namespace=default
       - name: Create cleanup pods
@@ -63,8 +63,20 @@ jobs:
           kubectl exec cleanup-pod-5 -- bash -c "[ -d /mnt/polkadot8/chains ]; rm -rf /mnt/polkadot8/chains"
           kubectl exec cleanup-pod-6 -- bash -c "[ -d /mnt/basilisk1/chains ]; rm -rf /mnt/basilisk1/chains"
           kubectl exec cleanup-pod-6 -- bash -c "[ -d /mnt/basilisk2/chains ]; rm -rf /mnt/basilisk2/chains"
-          kubectl exec cleanup-pod-7 -- bash -c "[ -d /mnt/basilisk3/chains ]; rm -rf /mnt/basilisk3/chains"
-          kubectl exec cleanup-pod-7 -- bash -c "[ -d /mnt/basilisk-public-node/chains ]; rm -rf /mnt/basilisk-public-node/chains"          
+          kubectl exec cleanup-pod-7 -- bash -c "[ -d /mnt/basilisk-public-node/chains ]; rm -rf /mnt/basilisk-public-node/chains"
+          kubectl cp basilisk-raw.json cleanup-pod-1:/mnt/public-node/config
+          kubectl cp basilisk-raw.json cleanup-pod-1:/mnt/polkadot1/config
+          kubectl cp basilisk-raw.json cleanup-pod-2:/mnt/polkadot2/config
+          kubectl cp basilisk-raw.json cleanup-pod-2:/mnt/polkadot3/config
+          kubectl cp basilisk-raw.json cleanup-pod-3:/mnt/polkadot4/config
+          kubectl cp basilisk-raw.json cleanup-pod-3:/mnt/polkadot5/config
+          kubectl cp basilisk-raw.json cleanup-pod-4:/mnt/polkadot6/config
+          kubectl cp basilisk-raw.json cleanup-pod-4:/mnt/polkadot7/config
+          kubectl cp basilisk-raw.json cleanup-pod-5:/mnt/polkadot8/config
+          kubectl cp basilisk-raw.json cleanup-pod-6:/mnt/basilisk1/config
+          kubectl cp basilisk-raw.json cleanup-pod-6:/mnt/basilisk2/config
+          kubectl cp basilisk-raw.json cleanup-pod-7:/mnt/basilisk-public-node/config
+          
       
       - name: Delete cleanup pods
         run: kubectl get pods --no-headers=true | awk '/cleanup/{print $1}'| xargs kubectl delete pod

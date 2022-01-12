@@ -8,14 +8,9 @@ spec:
     image: redis
     command: ["sh", "-c", "tail -f /dev/null"]
     volumeMounts:
-    - name: basilisk3-storage
-      mountPath: /mnt/basilisk3
     - name: basilisk-public-node-storage
       mountPath: /mnt/basilisk-public-node
   volumes:
-  - name: basilisk3-storage
-    persistentVolumeClaim:
-      claimName: basilisk3-claim
   - name: basilisk-public-node-storage
     persistentVolumeClaim:
       claimName: basilisk-public-claim
