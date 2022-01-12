@@ -110,10 +110,10 @@ jobs:
         run: |
           kubectl apply -f postgres-pv.yaml
           kubectl apply -f indexer-pv.yaml
+          kubectl apply -f types-config-map.yaml
           kubectl apply -f postgres-deployment.yaml
           kubectl apply -f indexer-deployment.yaml
           kubectl apply -f basilisk-api-deployment.yaml
-
 
   inform-deployment-success:
     needs: run-k8s-deployment
