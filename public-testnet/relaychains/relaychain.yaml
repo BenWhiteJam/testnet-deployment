@@ -32,7 +32,7 @@ spec:
         volumeMounts:
           - mountPath: /mnt/polkadot1
             name: node1-storage
-          - mountPath: ~/public-testnet/config/
+          - mountPath: /home/runner/work/testnet-deployment/testnet-deployment/public-testnet/config
             subPath: /tmp/testnet-config
             name: config
         command: ["/polkadot/polkadot"]
