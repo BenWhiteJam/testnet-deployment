@@ -47,7 +47,7 @@ jobs:
         working-directory: ./public-testnet
         run: kubectl apply $(ls cleanup*.yaml | awk ' { print " -f " $1 } ') -n default
       - name: Wait for cleanup pods to get running
-        run: sleep 80
+        run: sleep 180
       - name: Cleanup and copy volumes
         working-directory: ./public-testnet
         run: |
@@ -64,21 +64,7 @@ jobs:
           kubectl exec cleanup-pod-6 -- bash -c "[ -d /mnt/basilisk1/chains ]; rm -rf /mnt/basilisk1/chains"
           kubectl exec cleanup-pod-6 -- bash -c "[ -d /mnt/basilisk2/chains ]; rm -rf /mnt/basilisk2/chains"
           kubectl exec cleanup-pod-7 -- bash -c "[ -d /mnt/basilisk3/chains ]; rm -rf /mnt/basilisk3/chains"
-          kubectl exec cleanup-pod-7 -- bash -c "[ -d /mnt/basilisk-public-node/chains ]; rm -rf /mnt/basilisk-public-node/chains"
-          kubectl cp basilisk-raw.json cleanup-pod-1:/mnt/public-node/config
-          kubectl cp basilisk-raw.json cleanup-pod-1:/mnt/polkadot1/config
-          kubectl cp basilisk-raw.json cleanup-pod-2:/mnt/polkadot2/config
-          kubectl cp basilisk-raw.json cleanup-pod-2:/mnt/polkadot3/config
-          kubectl cp basilisk-raw.json cleanup-pod-3:/mnt/polkadot4/config
-          kubectl cp basilisk-raw.json cleanup-pod-3:/mnt/polkadot5/config
-          kubectl cp basilisk-raw.json cleanup-pod-4:/mnt/polkadot6/config
-          kubectl cp basilisk-raw.json cleanup-pod-4:/mnt/polkadot7/config
-          kubectl cp basilisk-raw.json cleanup-pod-5:/mnt/polkadot8/config
-          kubectl cp basilisk-raw.json cleanup-pod-6:/mnt/basilisk1/config
-          kubectl cp basilisk-raw.json cleanup-pod-6:/mnt/basilisk2/config
-          kubectl cp basilisk-raw.json cleanup-pod-7:/mnt/basilisk3/config
-          kubectl cp basilisk-raw.json cleanup-pod-7:/mnt/basilisk-public-node/config
-          
+          kubectl exec cleanup-pod-7 -- bash -c "[ -d /mnt/basilisk-public-node/chains ]; rm -rf /mnt/basilisk-public-node/chains"          
       
       - name: Delete cleanup pods
         run: kubectl get pods --no-headers=true | awk '/cleanup/{print $1}'| xargs kubectl delete pod
