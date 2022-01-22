@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cleanup-pod-8
+spec:
+  containers:
+  - name: cleanup-pod-8
+    image: redis
+    command: ["sh", "-c", "tail -f /dev/null"]
+    volumeMounts:
+    - name: statemine1-storage
+      mountPath: /mnt/statemine1
+    - name: statemine2-storage
+      mountPath: /mnt/statemine2
+  volumes:
+  - name: statemine1-storage
+    persistentVolumeClaim:
+      claimName: statemine1-claim
+  - name: statemine2-storage
+    persistentVolumeClaim:
+      claimName: statemine2-claim
