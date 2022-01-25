@@ -35,7 +35,7 @@ jobs:
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          source: 's3://hydradx-config-bucket/testnet/basilisk-testnet-chainspec.json'
+          source: 's3://hydradx-config/testnet/basilisk-testnet-chainspec.json'
           dest: './public-testnet/basilisk-testnet-chainspec.json'
       - name: Delete deployments
         run: kubectl delete --all deployments --namespace=default
@@ -94,7 +94,7 @@ jobs:
         run: kubectl apply -f parachain.yaml
       - name: Wait for statemine parachain to deploy
         run: sleep 60
-      - name: Register Basilisk Parachain
+      - name: Register Parachains
         run: |
           curl -H 'Authorization: ${{ secrets.AUTH_TOKEN }}' https://ci-para-reg.hydration.cloud/register ${{ secrets.AUTH_TOKEN }} &
 
