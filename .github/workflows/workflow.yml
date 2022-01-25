@@ -94,7 +94,7 @@ jobs:
         run: kubectl apply -f parachain.yaml
       - name: Wait for statemine parachain to deploy
         run: sleep 60
-      - name: Register Basilisk Parachain
+      - name: Register Parachains
         run: |
           curl -H 'Authorization: ${{ secrets.AUTH_TOKEN }}' https://ci-para-reg.hydration.cloud/register ${{ secrets.AUTH_TOKEN }} &
 
