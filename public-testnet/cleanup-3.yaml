@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cleanup-pod-3
+spec:
+  containers:
+  - name: cleanup-pod-3
+    command: ["sh", "-c", "tail -f /dev/null"]
+    image: redis
+    volumeMounts:
+    - name: node4-storage
+      mountPath: /mnt/polkadot4
+    - name: node5-storage
+      mountPath: /mnt/polkadot5
+  volumes:
+  - name: node4-storage
+    persistentVolumeClaim:
+      claimName: node4-claim
+  - name: node5-storage
+    persistentVolumeClaim:
+      claimName: node5-claim   

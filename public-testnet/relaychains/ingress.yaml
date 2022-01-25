@@ -1,0 +1,31 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: default
+  name: relaychain-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/group.name: relaychain-ingress
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=4000
+    alb.ingress.kubernetes.io/auth-session-timeout: '86400'
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":443}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/healthcheck-port: '80'
+    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=600
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:601305236792:certificate/797e403e-1502-4543-887d-d7ed0a4da64b
+  labels:
+    app: relaychain-testnet-app
+spec:
+  rules:
+    - host: relaychain.hydration.cloud
+      http:
+        paths:
+          - path: /ws/
+            backend:
+              serviceName: public-rpc-deployment-svc
+              servicePort: 80
+
+

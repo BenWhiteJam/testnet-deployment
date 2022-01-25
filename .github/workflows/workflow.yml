@@ -1,0 +1,132 @@
+name: Deploy on Kubernetes Cluster
+on:
+  push:
+    branches:
+      - main
+  repository_dispatch:
+    types: [run-k8s-deployment]
+jobs:
+  run-k8s-deployment:
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_K8S_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_K8S_SECRET_KEY }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install kubectl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y apt-transport-https ca-certificates curl
+          sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+          echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+          sudo apt-get update
+          sudo apt-get install -y kubectl
+      - name: Sleep for 10 seconds
+        run: sleep 10
+      - name: Configure AWS CLI and K8s
+        run: |
+          sudo apt-get install awscli
+          aws configure set aws_access_key_id ${{ env.AWS_ACCESS_KEY_ID }}; aws configure set aws_secret_access_key ${{ env.AWS_SECRET_ACCESS_KEY }}; aws configure set default.region eu-west-1
+      - name: Configure K8S Cluster
+        run: aws eks --region eu-west-1 update-kubeconfig --name testnet-ec2
+      - name: Download Basilisk configuration file
+        uses: prewk/s3-cp-action@v2
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          source: 's3://hydradx-config-bucket/testnet/basilisk-testnet-chainspec.json'
+          dest: './public-testnet/basilisk-testnet-chainspec.json'
+      - name: Delete deployments
+        run: kubectl delete --all deployments --namespace=default
+      - name: Create cleanup pods
+        working-directory: ./public-testnet
+        run: kubectl apply $(ls cleanup*.yaml | awk ' { print " -f " $1 } ') -n default
+      - name: Wait for cleanup pods to get running
+        run: sleep 180
+      - name: Cleanup and copy volumes
+        working-directory: ./public-testnet
+        run: |
+          kubectl config set-context --current --namespace=default
+          kubectl exec cleanup-pod-1 -- bash -c "[ -d /mnt/public-node/chains ]; rm -rf /mnt/public-node/chains"
+          kubectl exec cleanup-pod-1 -- bash -c "[ -d /mnt/polkadot1/chains ]; rm -rf /mnt/polkadot1/chains"
+          kubectl exec cleanup-pod-2 -- bash -c "[ -d /mnt/polkadot2/chains ]; rm -rf /mnt/polkadot2/chains"
+          kubectl exec cleanup-pod-2 -- bash -c "[ -d /mnt/polkadot3/chains ]; rm -rf /mnt/polkadot3/chains"
+          kubectl exec cleanup-pod-3 -- bash -c "[ -d /mnt/polkadot4/chains ]; rm -rf /mnt/polkadot4/chains"
+          kubectl exec cleanup-pod-3 -- bash -c "[ -d /mnt/polkadot5/chains ]; rm -rf /mnt/polkadot5/chains"
+          kubectl exec cleanup-pod-4 -- bash -c "[ -d /mnt/polkadot6/chains ]; rm -rf /mnt/polkadot6/chains"
+          kubectl exec cleanup-pod-4 -- bash -c "[ -d /mnt/polkadot7/chains ]; rm -rf /mnt/polkadot7/chains"
+          kubectl exec cleanup-pod-5 -- bash -c "[ -d /mnt/polkadot8/chains ]; rm -rf /mnt/polkadot8/chains"
+          kubectl exec cleanup-pod-6 -- bash -c "[ -d /mnt/basilisk1/chains ]; rm -rf /mnt/basilisk1/chains"
+          kubectl exec cleanup-pod-6 -- bash -c "[ -d /mnt/basilisk2/chains ]; rm -rf /mnt/basilisk2/chains"
+          kubectl exec cleanup-pod-7 -- bash -c "[ -d /mnt/basilisk-public-node/chains ]; rm -rf /mnt/basilisk-public-node/chains"
+          kubectl exec cleanup-pod-8 -- bash -c "[ -d /mnt/statemine1/chains ]; rm -rf /mnt/statemine1/chains"
+          kubectl exec cleanup-pod-8 -- bash -c "[ -d /mnt/statemine1/chains ]; rm -rf /mnt/statemine1/chains"
+          kubectl exec cleanup-pod-9 -- bash -c "[ -d /mnt/statemine-public-node/chains ]; rm -rf /mnt/statemine-public-node/chains"
+          kubectl cp basilisk-testnet-chainspec.json cleanup-pod-1:/mnt/public-node/config
+          kubectl cp basilisk-testnet-chainspec.json cleanup-pod-1:/mnt/polkadot1/config
+          kubectl cp basilisk-testnet-chainspec.json cleanup-pod-2:/mnt/polkadot2/config
+          kubectl cp basilisk-testnet-chainspec.json cleanup-pod-2:/mnt/polkadot3/config
+          kubectl cp basilisk-testnet-chainspec.json cleanup-pod-3:/mnt/polkadot4/config
+          kubectl cp basilisk-testnet-chainspec.json cleanup-pod-3:/mnt/polkadot5/config
+          kubectl cp basilisk-testnet-chainspec.json cleanup-pod-4:/mnt/polkadot6/config
+          kubectl cp basilisk-testnet-chainspec.json cleanup-pod-4:/mnt/polkadot7/config
+          kubectl cp basilisk-testnet-chainspec.json cleanup-pod-5:/mnt/polkadot8/config
+          kubectl cp basilisk-testnet-chainspec.json cleanup-pod-6:/mnt/basilisk1/config
+          kubectl cp basilisk-testnet-chainspec.json cleanup-pod-6:/mnt/basilisk2/config
+          kubectl cp basilisk-testnet-chainspec.json cleanup-pod-7:/mnt/basilisk-public-node/config
+          
+      
+      - name: Delete cleanup pods
+        run: kubectl get pods --no-headers=true | awk '/cleanup/{print $1}'| xargs kubectl delete pod
+      - name: Create relaychain manifests
+        working-directory: ./public-testnet/relaychains
+        run: kubectl apply -f relaychain.yaml
+      - name: Wait for relaychain to deploy
+        run: sleep 90
+      - name: Create basilisk parachain manifests
+        working-directory: ./public-testnet/parachains/basilisk
+        run: kubectl apply -f parachain.yaml
+      - name: Wait for basilisk parachain to deploy
+        run: sleep 20
+      - name: Create statemine parachain manifests
+        working-directory: ./public-testnet/parachains/statemine
+        run: kubectl apply -f parachain.yaml
+      - name: Wait for statemine parachain to deploy
+        run: sleep 60
+      - name: Register Basilisk Parachain
+        run: |
+          curl -H 'Authorization: ${{ secrets.AUTH_TOKEN }}' https://ci-para-reg.hydration.cloud/register ${{ secrets.AUTH_TOKEN }} &
+
+      - name: Delete Indexer and Processor Volume Claims
+        run: |
+          kubectl delete pvc postgresvol
+          kubectl delete pvc hydraindexervol
+          kubectl delete pvc basiliskapivol
+          
+      - name: Deploy Indexer and Processor
+        working-directory: ./public-testnet/processor
+        run: |
+          kubectl apply -f postgres-pv.yaml
+          kubectl apply -f indexer-pv.yaml
+          kubectl apply -f types-config-map.yaml
+          kubectl apply -f postgres-deployment.yaml
+          kubectl apply -f indexer-deployment.yaml
+          kubectl apply -f basilisk-api-deployment.yaml
+
+  inform-deployment-success:
+    needs: run-k8s-deployment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-ruby@v1
+      - name: Send Webhook Notification
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          HOOK_OS_NAME: ${{ runner.os }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+        run: |
+          git clone https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
+          bash webhook/send.sh $JOB_STATUS $WEBHOOK_URL
+        shell: bash

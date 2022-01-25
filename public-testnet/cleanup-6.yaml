@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cleanup-pod-6
+spec:
+  containers:
+  - name: cleanup-pod-6
+    image: redis
+    command: ["sh", "-c", "tail -f /dev/null"]
+    volumeMounts:
+    - name: basilisk1-storage
+      mountPath: /mnt/basilisk1
+    - name: basilisk2-storage
+      mountPath: /mnt/basilisk2
+  volumes:
+  - name: basilisk1-storage
+    persistentVolumeClaim:
+      claimName: basilisk1-claim
+  - name: basilisk2-storage
+    persistentVolumeClaim:
+      claimName: basilisk2-claim
