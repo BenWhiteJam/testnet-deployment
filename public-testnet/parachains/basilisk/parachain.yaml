@@ -27,7 +27,7 @@ spec:
         volumeMounts:
           - mountPath: /mnt/basilisk1
             name: basilisk1-storage 
-        args: ["--chain", "/mnt/basilisk1/config/basilisk-raw.json", "--unsafe-ws-external", "--rpc-cors", "all", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk1", "--node-key", "0000000000000000000000000000000000000000000000000000000000000009", "--keystore-path", "/mnt/basilisk1/config/keystore-c1", "--bootnodes", "/dns/coll-01-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-01-svc.default.svc.cluster.local/tcp/30333", "--", "--chain", "/mnt/basilisk1/config/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native", "--log", "debug"]
+        args: ["--chain", "/mnt/basilisk1/config/basilisk-testnet-chainspec.json", "--unsafe-ws-external", "--rpc-cors", "all", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk1", "--node-key", "0000000000000000000000000000000000000000000000000000000000000009", "--keystore-path", "/mnt/basilisk1/config/keystore-c1", "--bootnodes", "/dns/coll-01-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-01-svc.default.svc.cluster.local/tcp/30333", "--", "--chain", "/mnt/basilisk1/config/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native", "--log", "debug"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
@@ -66,7 +66,7 @@ spec:
         volumeMounts:
           - mountPath: /mnt/basilisk2
             name: basilisk2-storage
-        args: ["--chain", "/mnt/basilisk2/config/basilisk-raw.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk2", "--node-key", "000000000000000000000000000000000000000000000000000000000000000a", "--keystore-path", "/mnt/basilisk2/config/keystore-c2", "--bootnodes", "/dns/coll-01-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-02-svc.default.svc.cluster.local/tcp/30333", "--", "--chain", "/mnt/basilisk2/config/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native", "--log", "debug"]
+        args: ["--chain", "/mnt/basilisk2/config/basilisk-testnet-chainspec.json", "--parachain-id", "2090", "--collator", "--base-path", "/mnt/basilisk2", "--node-key", "000000000000000000000000000000000000000000000000000000000000000a", "--keystore-path", "/mnt/basilisk2/config/keystore-c2", "--bootnodes", "/dns/coll-01-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/coll-02-svc.default.svc.cluster.local/tcp/30333", "--", "--chain", "/mnt/basilisk2/config/westend-raw.json", "--base-path", "/basilisk/", "--execution=Native", "--log", "debug"]
         ports:
         - containerPort: 9944
         - containerPort: 9933
@@ -105,7 +105,7 @@ spec:
         volumeMounts:
           - mountPath: /mnt/basilisk-public-node
             name: parachain-public-storage
-        args: ["--chain", "/mnt/basilisk-public-node/config/basilisk-raw.json", "--parachain-id", "2090", "--base-path", "/basilisk/", "--bootnodes", "/dns/coll-01-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/public-rpc-svc.default.svc.cluster.local/tcp/30333", "--ws-external", "--unsafe-ws-external", "--rpc-methods", "Unsafe", "--rpc-cors", "all", "--", "--chain", "/mnt/basilisk-public-node/config/westend-raw.json", "--base-path", "/basilisk/"]
+        args: ["--chain", "/mnt/basilisk-public-node/config/basilisk-testnet-chainspec.json", "--parachain-id", "2090", "--base-path", "/basilisk/", "--bootnodes", "/dns/coll-01-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWQizATZJGTZSb8ShuaniCCaDCBQSczRQ38QgvWH3sJj9c", "--public-addr", "/dns/public-rpc-svc.default.svc.cluster.local/tcp/30333", "--ws-external", "--unsafe-ws-external", "--rpc-methods", "Unsafe", "--rpc-cors", "all", "--", "--chain", "/mnt/basilisk-public-node/config/westend-raw.json", "--base-path", "/basilisk/"]
         ports:
         - containerPort: 9944
       volumes:
