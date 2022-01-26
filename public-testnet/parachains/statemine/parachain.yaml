@@ -15,6 +15,9 @@ spec:
     spec:
       containers:
       - image: parity/polkadot-collator:v5.1.0-3331a02b-statemint-only
+        env:
+          - name: CI_PARA_ID
+            value: "1000"
         resources:
           limits:
             memory: "5000Mi"
@@ -54,6 +57,9 @@ spec:
     spec:
       containers:
       - image: parity/polkadot-collator:v5.1.0-3331a02b-statemint-only
+        env:
+          - name: CI_PARA_ID
+            value: "1000"
         resources:
           limits:
             memory: "5000Mi"
@@ -93,6 +99,9 @@ spec:
     spec:
       containers:
       - image: parity/polkadot-collator:v5.1.0-3331a02b-statemint-only
+        env:
+          - name: CI_PARA_ID
+            value: "1000"
         resources:
           limits:
             memory: "5000Mi"

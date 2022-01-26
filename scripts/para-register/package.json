@@ -1,0 +1,19 @@
+{
+  "name": "para-register",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@polkadot/api": "^6.9.2",
+    "@polkadot/keyring": "^7.3.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "js-yaml": "^4.1.0",
+    "shelljs": "^0.8.4"
+  }
+}
