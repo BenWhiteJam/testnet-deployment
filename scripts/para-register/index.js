@@ -50,7 +50,7 @@ app.get('/register', async function (req, res) {
   ]);                                                              
 
   console.log(`Connected to relay chain: ${ch} ${nodeVersion}`);
- 
+
   app.listen(3000, () => {
     console.log('listenning on: 127.0.0.1:3000');
   });
@@ -61,17 +61,16 @@ async function doParachainRegistration() {
 
   let paraDeployments = findParachainDeployments();
   
-
   const keyring = new Keyring({ type: 'sr25519' });
   const root = keyring.addFromUri(SUDO_SEED);
 
   ecrLogin();
   for (const deployment of paraDeployments) {
-    const { paraId, chainParam, image } = parseParaInfoFromDeployment(deployment);
+    const { paraId, chainParam, image, cmd } = parseParaInfoFromDeployment(deployment);
 
     const chain = downloadChainspecAndReturnChain(chainParam);
 
-    const { state, wasm } = getParaStateWasm(chain, paraId, image);
+    const { state, wasm } = getParaStateWasm(chain, paraId, image, cmd);
 
     await registerParachain(paraId, state, wasm, root);
 
@@ -148,23 +147,33 @@ function parseParaInfoFromDeployment(path) {
 
   const image = deployment.spec.template.spec.containers[0].image;
   const args = deployment.spec.template.spec.containers[0].args;
+  const envs = deployment.spec.template.spec.containers[0].env;
+  let cmd = deployment.spec.template.spec.containers[0].command;
+
+  if (cmd) {
+    cmd = cmd[0]
+  } else {
+    cmd = false;
+  }
 
   const chainIdx = args.findIndex((e) => { return e.toLowerCase() == '--chain'; });
-  const paraIdIdx = args.findIndex((e) => { return e.toLowerCase() == '--parachain-id'; });
 
   if (chainIdx < 0) {
     throw new Error(`Failed to parse deployment - "--chain" not found`);
   }
 
-  if (paraIdIdx < 0) {
-    throw new Error(`Failed to parse deployment - "--parachain-id" not found`);
+  let paraId = NaN;
+  for (let i = 0; i < envs.length; i++) {
+    if (envs[i].name.toUpperCase() == "CI_PARA_ID") {
+      paraId = envs[i].value;
+      break;
+    }
   }
 
-  const paraId = args[paraIdIdx + 1];
   const chain = args[chainIdx  + 1];
 
   if (!paraId || isNaN(paraId * 1)) {
-    throw new Error(`Failed to parse deployment - invalid parachain-id: ${paraId}`);
+    throw new Error(`Failed to find or parse CI_PARA_ID in deployment - invalid parachain-id: ${paraId}`);
   }
 
   if (!chain) {
@@ -172,6 +181,7 @@ function parseParaInfoFromDeployment(path) {
   }
 
   return {
+    cmd: cmd,
     paraId: paraId,
     chainParam: chain,
     image: image 
@@ -201,17 +211,28 @@ function registerParachain(paraId, state, wasm, root) {
   return sudo(tx, root);
 }
 
-function getParaStateWasm(chain, paraId, image) {
+function getParaStateWasm(chain, paraId, image, cmd) {
   console.log(`Log: getParaStateWasm()`);
  
   const pullImageCmd = `docker pull ${image}`;
   const cleanupCmd = `docker rmi ${image}`;
 
-  const inDockerPath = chain.substr(1);
+  let maybeEntrypoint = "";
+  if (cmd) {
+    maybeEntrypoint = ` --entrypoint ${cmd}`; 
+  }
 
-  const fullPath = path.resolve(chain);
-  const exportStateCmd = `docker run -v ${fullPath}:${inDockerPath} --rm ${image} export-genesis-state --chain ${inDockerPath} --parachain-id ${paraId}`;
-  const exportWasmCmd = `docker run -v ${fullPath}:${inDockerPath} --rm ${image} export-genesis-wasm --chain ${inDockerPath}`;
+  let maybeVolume = "";
+  let inDockerChain = chain;
+  if (/.json$/.test(chain)) {
+    inDockerChain = chain.substr(1);
+    maybeVolume = ` -v ${path.resolve(chain)}:${inDockerChain}`;
+  }
+
+  const cleanupImage = "--rm";
+
+  const exportStateCmd = `docker run ${cleanupImage}${maybeVolume}${maybeEntrypoint} ${image} export-genesis-state --chain ${inDockerChain}`;
+  const exportWasmCmd = `docker run ${cleanupImage}${maybeVolume}${maybeEntrypoint} ${image} export-genesis-wasm --chain ${inDockerChain}`;
 
   const pullImageOut = shell.exec(pullImageCmd, { silent: true});
   if (pullImageOut.code !== 0) {
