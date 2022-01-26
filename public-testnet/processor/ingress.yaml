@@ -23,7 +23,7 @@ spec:
     - host: api-basilisk.hydration.cloud
       http:
         paths:
-          - path: /
+          - path: / 
             pathType: Prefix
             backend:
               serviceName: processor-query-service
