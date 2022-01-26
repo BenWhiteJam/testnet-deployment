@@ -15,6 +15,11 @@ spec:
     spec:
       containers:
       - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/basilisk:latest
+        command:
+          - /basilisk/testing-basilisk
+        env:
+          - name: CI_PARA_ID
+            value: "2090"
         resources:
           limits:
             memory: "5000Mi"
@@ -54,6 +59,11 @@ spec:
     spec:
       containers:
       - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/basilisk:latest
+        command:
+          - /basilisk/testing-basilisk
+        env:
+          - name: CI_PARA_ID
+            value: "2090"
         resources:
           limits:
             memory: "5000Mi"
@@ -93,6 +103,11 @@ spec:
     spec:
       containers:
       - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/basilisk:latest
+        command:
+          - /basilisk/testing-basilisk
+        env:
+          - name: CI_PARA_ID
+            value: "2090"
         resources:
           limits:
             memory: "5000Mi"
