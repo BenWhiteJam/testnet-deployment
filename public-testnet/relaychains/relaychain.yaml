@@ -22,11 +22,11 @@ spec:
           value: /mnt/polkadot1
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator01
         volumeMounts:
@@ -64,11 +64,11 @@ spec:
           value: /mnt/polkadot2
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator02
         volumeMounts:
@@ -106,11 +106,11 @@ spec:
           value: /mnt/polkadot3
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator03
         volumeMounts:
@@ -148,11 +148,11 @@ spec:
           value: /mnt/polkadot4
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator04
         volumeMounts:
@@ -190,11 +190,11 @@ spec:
           value: /mnt/polkadot5
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator05
         volumeMounts:
@@ -232,11 +232,11 @@ spec:
           value: /mnt/polkadot6
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator06
         volumeMounts:
@@ -274,11 +274,11 @@ spec:
           value: /mnt/polkadot7
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator07
         volumeMounts:
@@ -316,11 +316,11 @@ spec:
           value: /mnt/polkadot8
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator08
         volumeMounts:
@@ -358,13 +358,13 @@ spec:
           value: /mnt/public-node
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "1000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
-        name: relaychain-validator01
+        name: relaychain-public-rpc
         volumeMounts:
           - mountPath: /mnt/public-node
             name: public-rpc-storage
