@@ -1,0 +1,183 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: statemine-parachain-coll-01-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: statemine-parachain-coll-01
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: statemine-parachain-coll-01
+    spec:
+      containers:
+      - image: parity/polkadot-collator:v5.1.0-3331a02b-statemint-only
+        env:
+          - name: CI_PARA_ID
+            value: "1000"
+        resources:
+          limits:
+            memory: "5000Mi"
+            cpu: "3000m"
+          requests:
+            memory: "4000Mi"
+            cpu: "3000m"
+        imagePullPolicy: Always
+        name: statemine-parachain-coll-01
+        volumeMounts:
+          - mountPath: /mnt/statemine1
+            name: statemine1-storage 
+        args: ["--collator", "--alice", "--chain", "westmint-local", "--base-path", "/mnt/statemine1", "--parachain-id", "1000", "--node-key", "566fda57d784700432c4edb937c90f7aa6594beb2406702be9a9ffd90b55d969", "--bootnodes", "/dns/statemine-coll-01-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWBvtWymuzHuQMwpZcQqxyxu1SQihk6cM8jVkTTZEC33ta", "--bootnodes", "/dns/statemine-coll-02-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWS5gng66hru5qddfbmZ1P24YDRQC9oe41V5G311hjdWSE", "--unsafe-ws-external", "--unsafe-rpc-external", "--rpc-cors", "all", "--rpc-methods", "Unsafe", "--", "--chain", "/mnt/statemine1/config/westend-raw.json", "--execution=Native"]
+        ports:
+        - containerPort: 9944
+        - containerPort: 9933
+        - containerPort: 30333
+      volumes:
+        - name: statemine1-storage
+          persistentVolumeClaim:
+            claimName: statemine1-claim
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: statemine-parachain-coll-02-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: statemine-parachain-coll-02
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: statemine-parachain-coll-02
+    spec:
+      containers:
+      - image: parity/polkadot-collator:v5.1.0-3331a02b-statemint-only
+        env:
+          - name: CI_PARA_ID
+            value: "1000"
+        resources:
+          limits:
+            memory: "5000Mi"
+            cpu: "3000m"
+          requests:
+            memory: "4000Mi"
+            cpu: "3000m"
+        imagePullPolicy: Always
+        name: statemine-parachain-coll-02
+        volumeMounts:
+          - mountPath: /mnt/statemine2
+            name: statemine2-storage
+        args: ["--collator", "--bob", "--chain", "westmint-local", "--base-path", "/mnt/statemine2", "--parachain-id", "1000", "--node-key", "7c358e97166112940d27d226805b66346cc27c1f9ca108c0e540161c8c742944", "--bootnodes", "/dns/statemine-coll-01-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWBvtWymuzHuQMwpZcQqxyxu1SQihk6cM8jVkTTZEC33ta", "--bootnodes", "/dns/statemine-coll-02-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWS5gng66hru5qddfbmZ1P24YDRQC9oe41V5G311hjdWSE", "--unsafe-ws-external", "--unsafe-rpc-external", "--rpc-cors", "all", "--rpc-methods", "Unsafe", "--", "--chain", "/mnt/statemine2/config/westend-raw.json", "--execution=Native"]
+        ports:
+        - containerPort: 9944
+        - containerPort: 9933
+        - containerPort: 30333
+      volumes:
+        - name: statemine2-storage
+          persistentVolumeClaim:
+            claimName: statemine2-claim
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: statemine-public-rpc-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: statemine-public-rpc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: statemine-public-rpc
+    spec:
+      containers:
+      - image: parity/polkadot-collator:v5.1.0-3331a02b-statemint-only
+        env:
+          - name: CI_PARA_ID
+            value: "1000"
+        resources:
+          limits:
+            memory: "5000Mi"
+            cpu: "3000m"
+          requests:
+            memory: "4000Mi"
+            cpu: "3000m"
+        imagePullPolicy: Always
+        name: public-rpc
+        volumeMounts:
+          - mountPath: /mnt/statemine-public-node
+            name: statemine-parachain-public-storage
+        args: ["--chain", "westmint-local", "--base-path", "/mnt/statemine-public-node", "--parachain-id", "1000", "--bootnodes", "/dns/statemine-coll-01-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWBvtWymuzHuQMwpZcQqxyxu1SQihk6cM8jVkTTZEC33ta", "--bootnodes", "/dns/statemine-coll-02-svc.default.svc.cluster.local/tcp/30333/p2p/12D3KooWS5gng66hru5qddfbmZ1P24YDRQC9oe41V5G311hjdWSE", "--unsafe-ws-external", "--unsafe-rpc-external", "--rpc-cors", "all", "--rpc-methods", "Unsafe", "--", "--chain", "/mnt/statemine-public-node/config/westend-raw.json", "--execution=Native"]
+        ports:
+        - containerPort: 9944
+      volumes:
+        - name: statemine-parachain-public-storage
+          persistentVolumeClaim:
+            claimName: statemine-public-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: statemine-coll-01-svc
+spec:
+  ports:
+    - port: 9944
+      name: websocket
+      targetPort: 9944
+      protocol: TCP
+    - port: 30333
+      name: custom-port
+      targetPort: 30333
+      protocol: TCP
+    - port: 9933
+      name: rpc-port
+      targetPort: 9933  
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: statemine-parachain-coll-01
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: statemine-coll-02-svc
+spec:
+  ports:
+    - port: 9944
+      name: websocket
+      targetPort: 9944
+      protocol: TCP
+    - port: 30333
+      name: custom-port
+      targetPort: 30333
+      protocol: TCP
+    - port: 9933
+      name: rpc-port
+      targetPort: 9933
+      protocol: TCP   
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: statemine-parachain-coll-02
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: statemine-public-rpc-svc
+spec:
+  ports:
+    - port: 80
+      name: websocket
+      targetPort: 9944
+      protocol: TCP
+  type: NodePort    
+  selector:
+    app.kubernetes.io/name: statemine-public-rpc

@@ -1,13 +1,7 @@
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: hydra-ui-test
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator01-deployment
 spec:
   selector:
@@ -20,41 +14,38 @@ spec:
         app.kubernetes.io/name: relaychain-validator01
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.11-169bab55d
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.13-7d8f00b90c
+        securityContext:
+          privileged: true
         env:
         - name: TMPDIR
           value: /mnt/polkadot1
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator01
         volumeMounts:
-          - mountPath: /tmp
-            name: persistent-storage
           - mountPath: /mnt/polkadot1
             name: node1-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot1", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "/tmp/relaychain/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/mnt/polkadot1/config/westend-raw.json", "--base-path", "/mnt/polkadot1", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000001", "--keystore-path", "/mnt/polkadot1/config/keystore-v1", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator01-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
-        - name: persistent-storage
-          persistentVolumeClaim:
-            claimName: efs-pv
         - name: node1-storage
           persistentVolumeClaim:
-            claimName: efs-node1-storage
+            claimName: node1-claim
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator02-deployment
 spec:
   selector:
@@ -67,41 +58,36 @@ spec:
         app.kubernetes.io/name: relaychain-validator02
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.11-169bab55d
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.13-7d8f00b90c
         env:
         - name: TMPDIR
           value: /mnt/polkadot2
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator02
         volumeMounts:
-          - mountPath: /tmp
-            name: persistent-storage
           - mountPath: /mnt/polkadot2
             name: node2-storage  
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot2", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000002", "--keystore-path", "/tmp/relaychain/keystore-v2", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/mnt/polkadot2/config/westend-raw.json", "--base-path", "/mnt/polkadot2", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000002", "--keystore-path", "/mnt/polkadot2/config/keystore-v2", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator02-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
-        - name: persistent-storage
-          persistentVolumeClaim:
-            claimName: efs-pv
         - name: node2-storage
           persistentVolumeClaim:
-            claimName: efs-node2-storage
+            claimName: node2-claim
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator03-deployment
 spec:
   selector:
@@ -114,41 +100,36 @@ spec:
         app.kubernetes.io/name: relaychain-validator03
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.11-169bab55d
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.13-7d8f00b90c
         env:
         - name: TMPDIR
           value: /mnt/polkadot3
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator03
         volumeMounts:
-          - mountPath: /tmp
-            name: persistent-storage
           - mountPath: /mnt/polkadot3
             name: node3-storage  
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot3", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000003", "--keystore-path", "/tmp/relaychain/keystore-v3", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/mnt/polkadot3/config/westend-raw.json", "--base-path", "/mnt/polkadot3", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000003", "--keystore-path", "/mnt/polkadot3/config/keystore-v3", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator03-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
-        - name: persistent-storage
-          persistentVolumeClaim:
-            claimName: efs-pv
         - name: node3-storage
           persistentVolumeClaim:
-            claimName: efs-node3-storage      
+            claimName: node3-claim    
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator04-deployment
 spec:
   selector:
@@ -161,41 +142,36 @@ spec:
         app.kubernetes.io/name: relaychain-validator04
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.11-169bab55d
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.13-7d8f00b90c
         env:
         - name: TMPDIR
           value: /mnt/polkadot4
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator04
         volumeMounts:
-          - mountPath: /tmp
-            name: persistent-storage
           - mountPath: /mnt/polkadot4
             name: node4-storage  
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot4", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000004", "--keystore-path", "/tmp/relaychain/keystore-v4", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/mnt/polkadot4/config/westend-raw.json", "--base-path", "/mnt/polkadot4", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000004", "--keystore-path", "/mnt/polkadot4/config/keystore-v4", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator04-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
-        - name: persistent-storage
-          persistentVolumeClaim:
-            claimName: efs-pv
         - name: node4-storage
           persistentVolumeClaim:
-            claimName: efs-node4-storage
+            claimName: node4-claim
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator05-deployment
 spec:
   selector:
@@ -208,41 +184,36 @@ spec:
         app.kubernetes.io/name: relaychain-validator05
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.11-169bab55d
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.13-7d8f00b90c
         env:
         - name: TMPDIR
           value: /mnt/polkadot5
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator05
         volumeMounts:
-          - mountPath: /tmp
-            name: persistent-storage
           - mountPath: /mnt/polkadot5
             name: node5-storage  
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot5", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000005", "--keystore-path", "/tmp/relaychain/keystore-v5", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/mnt/polkadot5/config/westend-raw.json", "--base-path", "/mnt/polkadot5", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000005", "--keystore-path", "/mnt/polkadot5/config/keystore-v5", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator05-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
-        - name: persistent-storage
-          persistentVolumeClaim:
-            claimName: efs-pv
         - name: node5-storage
           persistentVolumeClaim:
-            claimName: efs-node5-storage
+            claimName: node5-claim
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator06-deployment
 spec:
   selector:
@@ -255,41 +226,36 @@ spec:
         app.kubernetes.io/name: relaychain-validator06
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.11-169bab55d
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.13-7d8f00b90c
         env:
         - name: TMPDIR
           value: /mnt/polkadot6
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator06
         volumeMounts:
-          - mountPath: /tmp
-            name: persistent-storage
           - mountPath: /mnt/polkadot6
             name: node6-storage  
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot6", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000006", "--keystore-path", "/tmp/relaychain/keystore-v6", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/mnt/polkadot6/config/westend-raw.json", "--base-path", "/mnt/polkadot6", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000006", "--keystore-path", "/mnt/polkadot6/config/keystore-v6", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator06-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
-        - name: persistent-storage
-          persistentVolumeClaim:
-            claimName: efs-pv
         - name: node6-storage
           persistentVolumeClaim:
-            claimName: efs-node6-storage
+            claimName: node6-claim
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator07-deployment
 spec:
   selector:
@@ -302,41 +268,36 @@ spec:
         app.kubernetes.io/name: relaychain-validator07
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.11-169bab55d
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.13-7d8f00b90c
         env:
         - name: TMPDIR
           value: /mnt/polkadot7
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator07
         volumeMounts:
-          - mountPath: /tmp
-            name: persistent-storage
           - mountPath: /mnt/polkadot7
             name: node7-storage  
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot7", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000007", "--keystore-path", "/tmp/relaychain/keystore-v7", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/mnt/polkadot7/config/westend-raw.json", "--base-path", "/mnt/polkadot7", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000007", "--keystore-path", "/mnt/polkadot7/config/keystore-v7", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator07-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
-        - name: persistent-storage
-          persistentVolumeClaim:
-            claimName: efs-pv
         - name: node7-storage
           persistentVolumeClaim:
-            claimName: efs-node7-storage
+            claimName: node7-claim
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator08-deployment
 spec:
   selector:
@@ -349,41 +310,36 @@ spec:
         app.kubernetes.io/name: relaychain-validator08
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.11-169bab55d
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.13-7d8f00b90c
         env:
         - name: TMPDIR
           value: /mnt/polkadot8
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "3000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
         name: relaychain-validator08
         volumeMounts:
-          - mountPath: /tmp
-            name: persistent-storage
           - mountPath: /mnt/polkadot8
             name: node8-storage  
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/polkadot8", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000008", "--keystore-path", "/tmp/relaychain/keystore-v8", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/mnt/polkadot8/config/westend-raw.json", "--base-path", "/mnt/polkadot8", "--validator", "--node-key", "0000000000000000000000000000000000000000000000000000000000000008", "--keystore-path", "/mnt/polkadot8/config/keystore-v8", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/validator08-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
-        - name: persistent-storage
-          persistentVolumeClaim:
-            claimName: efs-pv
         - name: node8-storage
           persistentVolumeClaim:
-            claimName: efs-node8-storage
+            claimName: node8-claim
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator-public-rpc-deployment
 spec:
   selector:
@@ -396,41 +352,36 @@ spec:
         app.kubernetes.io/name: relaychain-public-rpc
     spec:
       containers:
-      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.11-169bab55d
+      - image: 601305236792.dkr.ecr.eu-west-1.amazonaws.com/relaychain-test:0.9.13-7d8f00b90c
         env:
         - name: TMPDIR
           value: /mnt/public-node
         resources:
           limits:
-            memory: "5000Mi"
-            cpu: "3000m"
+            memory: "2000Mi"
+            cpu: "1600m"
           requests:
-            memory: "4000Mi"
-            cpu: "3000m"
+            memory: "1000Mi"
+            cpu: "1500m"
         imagePullPolicy: Always
-        name: relaychain-validator01
+        name: relaychain-public-rpc
         volumeMounts:
-          - mountPath: /tmp
-            name: persistent-storage
           - mountPath: /mnt/public-node
-            name: efs-public-rpc-storage
+            name: public-rpc-storage
         command: ["/polkadot/polkadot"]
-        args: ["--chain", "/tmp/westend-raw.json", "--base-path", "/mnt/public-node", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe"]
+        args: ["--chain", "/mnt/public-node/config/westend-raw.json", "--base-path", "/mnt/public-node", "--unsafe-ws-external", "--rpc-cors", "all", "--unsafe-rpc-external", "--rpc-methods", "Unsafe", "--public-addr", "/dns/public-rpc-deployment-svc.default.svc.cluster.local/tcp/30333"]
         ports:
         - containerPort: 9944
         - containerPort: 30333
       volumes:
-        - name: persistent-storage
+        - name: public-rpc-storage
           persistentVolumeClaim:
-            claimName: efs-pv
-        - name: efs-public-rpc-storage
-          persistentVolumeClaim:
-            claimName: efs-public-rpc-storage
+            claimName: public-node-claim
 ---            
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator01-svc
 spec:
   ports:
@@ -446,10 +397,11 @@ spec:
   selector:
     app.kubernetes.io/name: relaychain-validator01
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator02-svc
 spec:
   ports:
@@ -472,7 +424,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator03-svc
 spec:
   ports:
@@ -491,7 +443,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator04-svc
 spec:
   ports:
@@ -510,7 +462,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator05-svc
 spec:
   ports:
@@ -529,7 +481,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator06-svc
 spec:
   ports:
@@ -548,7 +500,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator07-svc
 spec:
   ports:
@@ -567,7 +519,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: validator08-svc
 spec:
   ports:
@@ -586,7 +538,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: hydra-ui-test
+  namespace: default
   name: public-rpc-deployment-svc
 spec:
   ports:
@@ -601,3 +553,5 @@ spec:
   type: NodePort
   selector:
     app.kubernetes.io/name: relaychain-public-rpc
+
+

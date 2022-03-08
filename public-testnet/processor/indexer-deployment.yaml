@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: hydra-indexer 
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hydra-indexer 
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hydra-indexer 
+    spec:
+      containers:
+      - image: redis:6.0-alpine
+        name:  redis
+        ports:
+          - containerPort: 9379
+        volumeMounts:
+          - mountPath: /mnt/data/
+            name: indexer-vol
+            subPath: redis
+
+      - image: subsquid/hydra-indexer:5
+        name: indexer
+        command: [ "/bin/sh", "-c" ]
+        args: ["yarn db:bootstrap && yarn start:prod"]
+        env:
+          - name: INDEXER_WORKERS
+            value: "5"
+          - name: DB_NAME
+            value: indexer
+          - name: DB_HOST 
+            value: postgres-service
+          - name: DB_USER
+            value: postgres
+          - name: DB_PASS
+            value: postgres
+          - name: DB_PORT
+            value: "5432"
+          - name: REDIS_URI
+            value: redis://127.0.0.1:6379/0
+          - name: BLOCK_HEIGHT
+            value: "0"
+          - name: WS_PROVIDER_ENDPOINT_URI
+            value: ws://coll-01-svc:9944
+          - name: TYPES_JSON 
+            value: /mnt/types/types.json
+          - name: TYPES_ALIAS 
+            value: /mnt/types/typesAlias.json
+        ports:
+          - containerPort: 9379
+        volumeMounts:
+          - name: indexer-vol
+            mountPath: /mnt/data/
+            subPath: indexer
+          - name: types-config
+            mountPath: /mnt/types/
+
+      - image: subsquid/hydra-indexer-status-service:5
+        name: indexer-status
+        env:
+          - name: REDIS_URI
+            value: redis://127.0.0.1:6379/0
+          - name: PORT
+            value: "8081"
+        ports:
+          - containerPort: 8081
+        volumeMounts:
+          - name: indexer-vol
+            mountPath: /mnt/data/
+            subPath: indexer-status
+
+      - image: subsquid/hydra-indexer-gateway:5
+        name: indexer-gw
+        env:
+          - name: DEV_MODE
+            value: "true"
+          - name: DB_NAME
+            value: indexer
+          - name: DB_HOST 
+            value: postgres-service
+          - name: DB_USER
+            value: postgres
+          - name: DB_PASS
+            value: postgres
+          - name: DB_PORT
+            value: "5432"
+          - name: HYDRA_INDEXER_STATUS_SERVICE
+            value: http://127.0.0.1:8081/status
+        ports:
+          - containerPort: 8080
+        volumeMounts:
+          - name: indexer-vol
+            mountPath: /mnt/data/
+            subPath: indexer-gw
+
+      volumes:
+        - name: indexer-vol 
+          persistentVolumeClaim:
+            claimName: hydraindexervol
+        - name: types-config
+          configMap:
+            name: basilisk-types
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: indexer-gw-service
+spec:
+  ports:
+    - name: indexer-gateway 
+      port: 8080 
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: hydra-indexer 

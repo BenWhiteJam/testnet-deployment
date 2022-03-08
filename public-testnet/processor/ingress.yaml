@@ -3,11 +3,11 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   namespace: default
-  name: parachain-basilisk-ingress
+  name: basilisk-api-ingress
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/group.name: parachain-basilisk
+    alb.ingress.kubernetes.io/group.name: basilisk-api-ingress
     alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=4000
     alb.ingress.kubernetes.io/auth-session-timeout: '86400'
     alb.ingress.kubernetes.io/target-type: ip
@@ -15,15 +15,18 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-path: /
     alb.ingress.kubernetes.io/healthcheck-port: '80'
     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=600
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:601305236792:certificate/fc2bd600-30c9-4e3a-b50c-381c903e32a3
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:601305236792:certificate/435b01bb-4652-4181-af3f-f36f8fa6af53
   labels:
-    app: public-rpc-expose
+    app: basilisk-api-app
 spec:
   rules:
-    - host: basilisk-parachain.hydration.cloud
+    - host: api-basilisk.hydration.cloud
       http:
         paths:
-          - path: /ws/
+          - path: / 
+            pathType: Prefix
             backend:
-              serviceName: public-rpc-svc
-              servicePort: 80
+              serviceName: processor-query-service
+              servicePort: 4000
+
+

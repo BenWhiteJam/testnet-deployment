@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: node2-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ebssc
+  resources:
+    requests:
+      storage: 100Gi
