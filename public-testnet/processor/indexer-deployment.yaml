@@ -14,7 +14,7 @@ spec:
         app.kubernetes.io/name: hydra-indexer 
     spec:
       containers:
-      - image: redis:6.0-alpine 
+      - image: redis:6.0-alpine
         name:  redis
         ports:
           - containerPort: 9379
@@ -24,7 +24,7 @@ spec:
             subPath: redis
 
       - image: subsquid/hydra-indexer:5
-        name: indexer 
+        name: indexer
         command: [ "/bin/sh", "-c" ]
         args: ["yarn db:bootstrap && yarn start:prod"]
         env:
@@ -114,7 +114,7 @@ spec:
   ports:
     - name: indexer-gateway 
       port: 8080 
-      targetPort: 8080 
+      targetPort: 8080
       protocol: TCP
   selector:
     app.kubernetes.io/name: hydra-indexer 

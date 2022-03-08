@@ -61,7 +61,7 @@ jobs:
           kubectl exec cleanup-pod-6 -- bash -c "[ -d /mnt/basilisk2/chains ]; rm -rf /mnt/basilisk2/chains"
           kubectl exec cleanup-pod-7 -- bash -c "[ -d /mnt/basilisk-public-node/chains ]; rm -rf /mnt/basilisk-public-node/chains"
           kubectl exec cleanup-pod-8 -- bash -c "[ -d /mnt/statemine1/chains ]; rm -rf /mnt/statemine1/chains"
-          kubectl exec cleanup-pod-8 -- bash -c "[ -d /mnt/statemine2/chains ]; rm -rf /mnt/statemine1/chains"
+          kubectl exec cleanup-pod-8 -- bash -c "[ -d /mnt/statemine2/chains ]; rm -rf /mnt/statemine2/chains"
           kubectl exec cleanup-pod-8 -- bash -c "[ -d /mnt/statemine1/polkadot ]; rm -rf /mnt/statemine1/polkadot"
           kubectl exec cleanup-pod-8 -- bash -c "[ -d /mnt/statemine2/polkadot ]; rm -rf /mnt/statemine1/polkadot"
           kubectl exec cleanup-pod-9 -- bash -c "[ -d /mnt/statemine-public-node/chains ]; rm -rf /mnt/statemine-public-node/chains"
